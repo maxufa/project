@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DraftLine.pro — Обмеры, чертежи и автоматизация AutoCAD (LISP)</title>
+<meta name="description" content="Профессиональные обмерные работы, выпуск чертежей и разработка LISP-скриптов для AutoCAD. Готовые решения для автоматизации рутины.">
+<style>
+:root{
+  --bg:#05070a; --bg2:#0b0f15; --card:#10161f; --line:#1e2836;
+  --txt:#e6edf3; --muted:#8b98a9; --acc:#3ea6ff; --acc2:#22d3a6;
+  --radius:16px; --max:1180px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;
+  background: transparent;
+  color:var(--txt);line-height:1.6;overflow-x:hidden;
+  min-height:100vh;display:flex;flex-direction:column;
+}
+main{flex:1}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 22px}
+
+/* ---------- ЧЕРТЕЖНЫЙ ФОН ---------- */
+.bg-drafting {
+  position: fixed; inset: 0; z-index: -1; background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(30, 40, 54, 0.4) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30, 40, 54, 0.4) 1px, transparent 1px),
+    linear-gradient(rgba(30, 40, 54, 0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30, 40, 54, 0.15) 1px, transparent 1px);
+  background-size: 200px 200px, 200px 200px, 40px 40px, 40px 40px;
+  background-position: center center; pointer-events: none;
+}
+.bg-drafting svg { width: 100%; height: 100%; display: block; }
+.bg-drafting::before {
+  content: ""; position: absolute; inset: 16px;
+  border: 1px solid var(--line); opacity: 0.6; border-radius: 4px;
+}
+.bg-drafting::after {
+  content: ""; position: absolute; inset: 24px;
+  border: 1px solid var(--line); opacity: 0.3; border-radius: 2px;
+}
+@media(max-width: 768px) {
+  .bg-drafting::before { inset: 8px; }
+  .bg-drafting::after { inset: 14px; }
+}
+
+/* ---------- NAV ---------- */
+header{
+  position:sticky;top:0;z-index:50;
+  background:rgba(5,7,10,.82);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+}
+nav{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px;cursor:pointer}
+.logo .dot{
+  width:30px;height:30px;border-radius:9px;
+  background:linear-gradient(135deg,var(--acc),var(--acc2));
+  display:grid;place-items:center;font-size:15px;color:#04121f;
+}
+.nav-links{display:flex;gap:24px;font-size:14.5px;color:var(--muted)}
+.nav-links a{transition:.2s;position:relative;padding:4px 0;cursor:pointer;white-space:nowrap}
+.nav-links a:hover{color:var(--txt)}
+.nav-links a.active{color:var(--txt)}
+.nav-links a.active::after{
+  content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;
+  background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:2px;
+}
+.burger{display:none;background:none;border:1px solid var(--line);color:var(--txt);width:42px;height:38px;border-radius:10px;font-size:18px;cursor:pointer}
+.btn{
+  display:inline-block;padding:11px 20px;border-radius:11px;font-weight:600;
+  font-size:14.5px;border:1px solid transparent;cursor:pointer;transition:.22s;font-family:inherit;
+}
+.btn-main{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#04121f}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(62,166,255,.28)}
+.btn-ghost{border-color:var(--line);color:var(--txt);background:transparent}
+.btn-ghost:hover{border-color:var(--acc);color:var(--acc)}
+.btn-sm{padding:9px 16px;font-size:13.5px}
+
+/* ---------- HERO ---------- */
+.hero{position:relative;padding:90px 0 70px;overflow:hidden}
+.hero::before{
+  content:"";position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(600px 300px at 80% -10%,rgba(62,166,255,.18),transparent 70%),
+    radial-gradient(500px 260px at 10% 20%,rgba(34,211,166,.12),transparent 70%);
+}
+.hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:1.1fr .9fr;gap:50px;align-items:center}
+.tag{
+  display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:99px;
+  border:1px solid var(--line);background:var(--bg2);color:var(--muted);
+  font-size:13px;margin-bottom:22px;
+}
+.tag b{color:var(--acc2);font-weight:600}
+h1{font-size:clamp(30px,4.4vw,50px);line-height:1.12;letter-spacing:-.5px;margin-bottom:20px}
+h1 span{background:linear-gradient(120deg,var(--acc),var(--acc2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:var(--muted);font-size:17px;max-width:520px;margin-bottom:30px}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap}
+
+.page-hero{padding:70px 0 40px;position:relative;overflow:hidden}
+.page-hero::before{
+  content:"";position:absolute;inset:0;z-index:0;
+  background:radial-gradient(700px 320px at 70% -20%,rgba(62,166,255,.16),transparent 70%);
+}
+.page-hero .wrap{position:relative;z-index:1}
+.page-hero h1{font-size:clamp(28px,3.6vw,44px);margin-bottom:14px}
+.page-hero p{color:var(--muted);max-width:660px;font-size:16.5px}
+
+.board{
+  position:relative;aspect-ratio:1/1;max-width:440px;margin-left:auto;
+  border-radius:22px;border:1px solid var(--line);background:var(--card);
+  overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.45);
+}
+.board svg{width:100%;height:100%;display:block}
+.board .grid{stroke:#1a2534;stroke-width:.6}
+.board .line{stroke:var(--acc);stroke-width:1.6;fill:none;stroke-dasharray:800;stroke-dashoffset:800;animation:draw 3.4s ease forwards}
+.board .line2{stroke:var(--acc2)}
+.board .node{fill:var(--acc2)}
+@keyframes draw{to{stroke-dashoffset:0}}
+.board .badge{
+  position:absolute;left:16px;bottom:16px;padding:7px 13px;border-radius:9px;
+  background:rgba(5,7,10,.78);border:1px solid var(--line);font-size:12px;color:var(--muted);
+  font-family:'Consolas',monospace;
+}
+.board .badge b{color:var(--acc2)}
+
+/* ---------- SECTIONS ---------- */
+section{padding:76px 0}
+.sec-head{max-width:660px;margin-bottom:44px}
+.sec-head .kicker{color:var(--acc2);font-size:13px;font-weight:600;letter-spacing:1.6px;text-transform:uppercase;margin-bottom:10px}
+.sec-head h2{font-size:clamp(24px,3vw,36px);letter-spacing:-.4px;margin-bottom:12px}
+.sec-head p{color:var(--muted)}
+
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:28px;transition:.25s;position:relative;overflow:hidden;display:block;
+}
+a.card:hover,.card.hover:hover{transform:translateY(-5px);border-color:#33506d;box-shadow:0 22px 50px rgba(0,0,0,.5)}
+.card .ico{
+  width:48px;height:48px;border-radius:13px;display:grid;place-items:center;font-size:22px;
+  background:linear-gradient(135deg,rgba(62,166,255,.18),rgba(34,211,166,.18));
+  border:1px solid var(--line);margin-bottom:18px;
+}
+.card h3{font-size:18px;margin-bottom:10px}
+.card p{color:var(--muted);font-size:14.5px}
+.card ul{list-style:none;margin-top:14px;display:grid;gap:7px}
+.card li{font-size:13.5px;color:var(--muted);padding-left:20px;position:relative}
+.card li::before{content:"▸";position:absolute;left:0;color:var(--acc2)}
+.card .more{display:inline-block;margin-top:16px;font-size:13.5px;color:var(--acc);font-weight:600}
+
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;counter-reset:s}
+.step{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px;position:relative}
+.step::before{counter-increment:s;content:"0" counter(s);font-family:'Consolas',monospace;font-size:13px;color:var(--acc);display:block;margin-bottom:12px}
+.step h4{font-size:15.5px;margin-bottom:8px}
+.step p{font-size:13.5px;color:var(--muted)}
+
+.code-wrap{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:center;background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);padding:38px}
+.code-box{background:#02040a;border:1px solid var(--line);border-radius:13px;overflow:hidden;font-family:'Consolas',monospace;font-size:13px;line-height:1.7}
+.code-box .bar{display:flex;align-items:center;gap:7px;padding:11px 14px;border-bottom:1px solid var(--line);background:#080c12;font-size:12px;color:var(--muted)}
+.code-box .bar i{width:10px;height:10px;border-radius:50%;display:inline-block;background:#2f3b4b}
+.code-box pre{padding:16px 18px;color:#b8c7d9;overflow-x:auto;white-space:pre}
+.cmt{color:#5b6b7d}.str{color:#7ee0b8}.fn{color:#6cb6ff}.num{color:#e6c07b}
+
+/* ---------- SHOP ---------- */
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px}
+.chip{
+  padding:8px 16px;border-radius:99px;border:1px solid var(--line);background:var(--bg2);
+  color:var(--muted);font:inherit;font-size:13.5px;cursor:pointer;transition:.2s;
+}
+.chip:hover{color:var(--txt);border-color:#33506d}
+.chip.on{color:#04121f;background:linear-gradient(135deg,var(--acc),var(--acc2));border-color:transparent;font-weight:600}
+.product{display:flex;flex-direction:column}
+.product .meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px}
+.product .cat{font-size:12px;color:var(--acc2);letter-spacing:.8px;text-transform:uppercase;font-weight:600}
+.product .cmd{font-family:'Consolas',monospace;font-size:12.5px;color:var(--acc);background:#02040a;border:1px solid var(--line);padding:3px 9px;border-radius:7px}
+.product h3{margin-bottom:8px}
+.product p{flex:1}
+.product .foot{display:flex;justify-content:space-between;align-items:center;margin-top:20px;padding-top:18px;border-top:1px solid var(--line);gap:10px;flex-wrap:wrap}
+.price{font-size:22px;font-weight:700;letter-spacing:-.5px}
+.price small{font-size:13px;color:var(--muted);font-weight:400}
+.note{margin-top:26px;padding:16px 20px;border:1px dashed var(--line);border-radius:13px;color:var(--muted);font-size:13.5px}
+.note b{color:var(--txt)}
+
+/* ---------- БЫЛО / СТАЛО ---------- */
+.ba-item .cap{margin-top:12px;font-size:14px;color:var(--muted)}
+.ba-item .cap b{display:block;color:var(--txt);font-size:15.5px;margin-bottom:2px}
+.ba{
+  --pos:50%;position:relative;aspect-ratio:4/3;margin:0;overflow:hidden;
+  border-radius:var(--radius);border:1px solid var(--line);background:var(--card);
+  user-select:none;touch-action:pan-y;
+}
+.ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.ba-before{position:absolute;inset:0;clip-path:inset(0 calc(100% - var(--pos)) 0 0)}
+.ba-handle{
+  position:absolute;top:0;bottom:0;left:var(--pos);width:2px;margin-left:-1px;
+  background:linear-gradient(var(--acc),var(--acc2));pointer-events:none;
+}
+.ba-handle i{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:38px;height:38px;border-radius:50%;display:grid;place-items:center;
+  background:var(--bg);border:2px solid var(--acc);color:var(--acc);font-style:normal;font-size:16px;
+  box-shadow:0 6px 20px rgba(0,0,0,.5);
+}
+.ba-lbl{
+  position:absolute;top:12px;padding:4px 11px;border-radius:8px;font-size:12px;font-weight:600;
+  background:rgba(5,7,10,.75);border:1px solid var(--line);pointer-events:none;
+}
+.ba-lbl.l{left:12px;color:var(--muted)}
+.ba-lbl.r{right:12px;color:var(--acc2)}
+.ba input{
+  position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize;
+  -webkit-appearance:none;appearance:none;
+}
+.ba:focus-within{border-color:var(--acc)}
+
+/* ---------- CONTACT ---------- */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+form{display:grid;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:30px}
+label{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
+input,textarea,select{width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--bg2);color:var(--txt);font:inherit;font-size:14.5px;outline:none;transition:.2s}
+input:focus,textarea:focus,select:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(62,166,255,.14)}
+textarea{resize:vertical;min-height:110px}
+.form-msg{font-size:14px;color:var(--acc2);display:none}
+.info-list{display:grid;gap:16px}
+.info-item{display:flex;gap:14px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:13px;padding:18px}
+.info-item .ico{font-size:20px;flex:0 0 auto}
+.info-item b{display:block;font-size:14px;margin-bottom:3px}
+.info-item span{font-size:13.5px;color:var(--muted)}
+.info-item a{color:var(--acc)}
+
+.cta-band{
+  background:linear-gradient(135deg,rgba(62,166,255,.14),rgba(34,211,166,.14));
+  border:1px solid var(--line);border-radius:var(--radius);padding:44px;
+  display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;
+}
+.cta-band h2{font-size:clamp(22px,2.6vw,30px);letter-spacing:-.4px;margin-bottom:6px}
+.cta-band p{color:var(--muted)}
+
+footer{border-top:1px solid var(--line);padding:30px 0;color:var(--muted);font-size:13.5px;margin-top:40px}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+footer a{cursor:pointer}
+footer a:hover{color:var(--acc)}
+
+.reveal{opacity:0;transform:translateY(22px);transition:.7s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+.page{display:none}
+.page.active{display:block;animation:fade .4s ease}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+@media(max-width:1020px){
+  .grid-4{grid-template-columns:1fr 1fr}
+}
+@media(max-width:960px){
+  .hero .wrap{grid-template-columns:1fr}
+  .board{margin:0 auto}
+  .grid-3,.steps{grid-template-columns:1fr 1fr}
+  .grid-2{grid-template-columns:1fr}
+  .code-wrap,.contact-grid{grid-template-columns:1fr}
+  .burger{display:block}
+  .nav-cta{display:none}
+  .nav-links{
+    display:none;position:absolute;top:64px;left:0;right:0;flex-direction:column;gap:0;
+    background:rgba(5,7,10,.97);border-bottom:1px solid var(--line);padding:8px 22px 14px;
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{padding:12px 0;border-bottom:1px solid var(--line)}
+  .nav-links a.active::after{display:none}
+}
+@media(max-width:600px){
+  .grid-3,.grid-4,.steps{grid-template-columns:1fr}
+  section{padding:56px 0}
+  .hero{padding:60px 0 40px}
+  .cta-band{padding:28px}
+  .code-wrap{padding:24px}
+}
+</style>
+</head>
+<body>
+
+<!-- ФОН С ЧЕРТЕЖНЫМИ ЭЛЕМЕНТАМИ -->
+<div class="bg-drafting" aria-hidden="true">
+  <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="#1e2836" stroke-width="1.5" fill="none" opacity="0.7">
+      <path d="M 100 80 H 300 M 100 70 V 90 M 300 70 V 90" />
+      <text x="200" y="65" fill="#8b98a9" font-size="12" font-family="monospace" text-anchor="middle" opacity="0.8">3200</text>
+      <path d="M 1200 150 H 1280 M 1240 110 V 190" stroke-dasharray="10 4 2 4" />
+      <circle cx="1240" cy="150" r="4" fill="#3ea6ff" opacity="0.8" />
+      <path d="M 150 800 A 150 150 0 0 1 300 650" stroke-dasharray="10 5" />
+      <path d="M 150 800 L 300 650" stroke-dasharray="4 4" opacity="0.5" />
+      <path d="M 40 80 L 40 40 L 80 40" />
+      <path d="M 1400 80 L 1400 40 L 1360 40" />
+      <path d="M 1150 800 H 1400 V 860 H 1150 Z" opacity="0.4" />
+      <path d="M 1150 820 H 1400 M 1150 840 H 1400" opacity="0.4" />
+      <text x="1170" y="815" fill="#8b98a9" font-size="11" font-family="monospace" opacity="0.6">DRAFTLINE.PRO</text>
+      <text x="1170" y="835" fill="#8b98a9" font-size="11" font-family="monospace" opacity="0.6">SCALE 1:100</text>
+    </g>
+  </svg>
+</div>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <a class="logo" data-page="home"><span class="dot">◈</span> DraftLine<span style="color:var(--acc)">.pro</span></a>
+      <div class="nav-links" id="navLinks">
+        <a data-page="home" class="active">Главная</a>
+        <a data-page="services">Замеры и чертежи</a>
+        <a data-page="lisp">LISP на заказ</a>
+        <a data-page="shop">Готовые скрипты</a>
+        <a data-page="contact">Контакты</a>
+      </div>
+      <a class="btn btn-main nav-cta" data-page="contact">Обсудить задачу</a>
+      <button class="burger" id="burger" aria-label="Меню">☰</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- ================= ГЛАВНАЯ ================= -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <div class="tag">● <b>AutoCAD / LISP</b> · замеры · чертежи · скрипты</div>
+        <h1>Точные чертежи и <span>умная автоматизация</span> в AutoCAD</h1>
+        <p class="lead">
+          Выполняем обмеры и выпускаем рабочую документацию. Разрабатываем AutoLISP-скрипты на заказ и предлагаем готовые решения, которые избавляют от рутины.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-main" data-page="shop">Смотреть каталог скриптов</a>
+          <a class="btn btn-ghost" data-page="contact">Заказать проект</a>
+        </div>
+      </div>
+
+      <div class="board" aria-hidden="true">
+        <svg viewBox="0 0 440 440">
+          <g class="grid">
+            <path d="M0 55H440M0 110H440M0 165H440M0 220H440M0 275H440M0 330H440M0 385H440"/>
+            <path d="M55 0V440M110 0V440M165 0V440M220 0V440M275 0V440M330 0V440M385 0V440"/>
+          </g>
+          <path class="line" d="M70 90 H370 V350 H70 Z"/>
+          <path class="line" d="M70 220 H210 V350"/>
+          <path class="line line2" d="M210 90 V220 H370"/>
+          <path class="line" d="M70 320 H140 V350"/>
+          <path class="line line2" d="M210 220 a55 55 0 0 1 55 -55" opacity=".8"/>
+          <path class="line line2" d="M70 70 H370" opacity=".55"/>
+          <path class="line line2" d="M70 62 V78M370 62 V78" opacity=".55"/>
+          <circle class="node" cx="70" cy="90" r="4"/>
+          <circle class="node" cx="370" cy="90" r="4"/>
+          <circle class="node" cx="370" cy="350" r="4"/>
+          <circle class="node" cx="70" cy="350" r="4"/>
+          <circle class="node" cx="210" cy="220" r="4"/>
+        </svg>
+        <div class="badge">(command <b>"_.RECTANG"</b> ...) · scale 1:100</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="kicker">Наши компетенции</div>
+        <h2>От натуры до готового DWG</h2>
+        <p>Закрываем весь спектр задач: от физических замеров помещения до написания кода, который ускорит вашу работу.</p>
+      </div>
+      <div class="grid-4">
+        <a class="card reveal" data-page="services">
+          <div class="ico">📏</div>
+          <h3>Обмеры</h3>
+          <p>Выезжаем на объект, снимаем точные размеры и переносим их в цифровой вид.</p>
+          <span class="more">Узнать больше →</span>
+        </a>
+        <a class="card reveal" data-page="services">
+          <div class="ico">📐</div>
+          <h3>Чертежи</h3>
+          <p>Готовим планы, разрезы и узлы. Оформляем по ГОСТ или вашему корпоративному шаблону.</p>
+          <span class="more">Узнать больше →</span>
+        </a>
+        <a class="card reveal" data-page="lisp">
+          <div class="ico">⚙️</div>
+          <h3>LISP под заказ</h3>
+          <p>Автоматизируем конкретно вашу рутину: от простой кнопки до сложного комплекса утилит.</p>
+          <span class="more">Узнать больше →</span>
+        </a>
+        <a class="card reveal" data-page="shop">
+          <div class="ico">🛒</div>
+          <h3>Каталог скриптов</h3>
+          <p>Проверенные временем утилиты. Скачал, загрузил, работаешь быстрее.</p>
+          <span class="more">Перейти в каталог →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="kicker">Наглядный результат</div>
+        <h2>Было / Стало</h2>
+        <p>Двигайте ползунок, чтобы увидеть разницу между исходными данными и финальным результатом нашей работы.</p>
+      </div>
+      <div class="grid-3" id="compare"></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="kicker">Прозрачный процесс</div>
+        <h2>Как мы пишем скрипты на заказ</h2>
+      </div>
+      <div class="steps">
+        <div class="step reveal"><h4>Брифинг</h4><p>Вы описываете задачу и присылаете пример DWG. Мы уточняем детали.</p></div>
+        <div class="step reveal"><h4>Смета</h4><p>Предлагаем решение, называем точную цену и сроки. Без скрытых платежей.</p></div>
+        <div class="step reveal"><h4>Разработка</h4><p>Пишем код, тестируем на ваших файлах, показываем промежуточные результаты.</p></div>
+        <div class="step reveal"><h4>Сдача</h4><p>Передаём файл .lsp, инструкцию по установке и гарантируем поддержку при запуске.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="cta-band reveal">
+        <div>
+          <h2>Оптимизируйте работу в AutoCAD</h2>
+          <p>Расскажите, что отнимает у вас больше всего времени. Мы предложим готовое решение или напишем скрипт под вас.</p>
+        </div>
+        <a class="btn btn-main" data-page="contact">Оставить заявку</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= ЗАМЕРЫ И ЧЕРТЕЖИ ================= -->
+<div class="page" id="page-services">
+  <section class="page-hero">
+    <div class="wrap reveal">
+      <div class="tag">● Проектные работы</div>
+      <h1>Обмеры и чертежи «под ключ»</h1>
+      <p>Создаём точную цифровую модель вашего объекта и выпускаем документацию, готовую к стройке или согласованию.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="kicker">Обмерные работы</div>
+        <h2>Точность до миллиметра</h2>
+        <p>Работаем с лазерным оборудованием. Переносим реальность в DWG без искажений.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card reveal"><div class="ico">📏</div><h3>Обмерный план</h3><p>Фиксируем все размеры, толщины стен, высоты проёмов и отметки полов.</p></div>
+        <div class="card reveal"><div class="ico">📊</div><h3>Ведомости</h3><p>Автоматически считаем площади, периметры и объемы, оформляем в таблицы AutoCAD.</p></div>
+        <div class="card reveal"><div class="ico">🚗</div><h3>Выезд на объект</h3><p>Работаем по Москве и области. Для регионов — удаленное сопровождение замерщика.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="kicker">Выпуск документации</div>
+        <h2>Чертежи без ошибок</h2>
+        <p>Оформляем строго по СПДС/ГОСТ. Настраиваем слои, стили, штампы и спецификации под ваш стандарт.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card reveal"><div class="ico">📄</div><h3>Планы и разрезы</h3><p>Архитектурные решения, планировки, фасады и необходимые разрезы.</p></div>
+        <div class="card reveal"><div class="ico">🔩</div><h3>Узлы и спецификации</h3><p>Детальная проработка узлов, выносные элементы, сбор спецификаций материалов.</p></div>
+        <div class="card reveal"><div class="ico">🗂️</div><h3>Настройка шаблонов</h3><p>Создадим и настроим DWT-шаблон с нуля под нужды вашей компании.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="cta-band reveal">
+        <div>
+          <h2>Нужен точный чертёж?</h2>
+          <p>Отправьте исходники или опишите объект — рассчитаем стоимость и сроки.</p>
+        </div>
+        <a class="btn btn-main" data-topic="Замеры или чертежи" data-page="contact">Обсудить работу</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= LISP НА ЗАКАЗ ================= -->
+<div class="page" id="page-lisp">
+  <section class="page-hero">
+    <div class="wrap reveal">
+      <div class="tag">● <b>AutoLISP</b> · индивидуальная разработка</div>
+      <h1>Ваш личный инструмент в AutoCAD</h1>
+      <p>Избавим вас от монотонных кликов. Напишем скрипт, который будет выполнять рутинные операции за пару секунд, с учетом специфики именно вашей работы.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="code-wrap reveal">
+        <div>
+          <h2 style="font-size:clamp(22px,2.6vw,30px);letter-spacing:-.4px;margin-bottom:14px">Как выглядит готовое решение</h2>
+          <p style="color:var(--muted);margin-bottom:18px">
+            Вы получаете не просто код, а готовый инструмент. Файл .lsp с понятной командой, который можно добавить в автозагрузку и использовать на любом ПК в офисе.
+          </p>
+          <a class="btn btn-main" data-topic="LISP на заказ" data-page="contact">Поставить задачу</a>
+        </div>
+
+        <div class="code-box">
+          <div class="bar"><i></i><i></i><i></i><span style="margin-left:8px">sum-areas.lsp</span></div>
+<pre><span class="cmt">;; Подсчет суммы площадей выбранных объектов</span>
+(<span class="fn">defun</span> c:AreaSum ( <span class="fn">/</span> ss i e a total )
+  (<span class="fn">setq</span> total <span class="num">0.0</span>)
+  (<span class="fn">if</span> (<span class="fn">setq</span> ss (<span class="fn">ssget</span> <span class="str">'((0 . "LWPOLYLINE"))</span>))
+    (<span class="fn">progn</span>
+      (<span class="fn">setq</span> i <span class="num">0</span>)
+      (<span class="fn">repeat</span> (<span class="fn">sslength</span> ss)
+        (<span class="fn">setq</span> e (<span class="fn">ssname</span> ss i)
+              a (<span class="fn">vla-get-Area</span>
+                  (<span class="fn">vlax-ename-&gt;vla-object</span> e)))
+        (<span class="fn">setq</span> total (<span class="fn">+</span> total a) i (<span class="fn">1+</span> i)))
+      (<span class="fn">princ</span> (<span class="fn">strcat</span> <span class="str">"\nИтого: "</span>
+             (<span class="fn">rtos</span> total <span class="num">2</span> <span class="num">2</span>) <span class="str">" кв.м."</span>))))
+  (<span class="fn">princ</span>))
+</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="kicker">Зона автоматизации</div>
+        <h2>Что мы можем запрограммировать</h2>
+      </div>
+      <div class="grid-3">
+        <div class="card reveal"><div class="ico">⚡</div><h3>Массовая обработка DWG</h3><p>Пакетная чистка, аудит, замена блоков, копирование настроек слоев.</p></div>
+        <div class="card reveal"><div class="ico">📋</div><h3>Генерация таблиц</h3><p>Умный сбор спецификаций, ведомостей и любых таблиц из атрибутов блоков.</p></div>
+        <div class="card reveal"><div class="ico">✅</div><h3>Контроль качества</h3><p>Проверка чертежа на "мусор", дубликаты, пустые объекты и неправильные слои.</p></div>
+        <div class="card reveal"><div class="ico">🔢</div><h3>Умные подписи</h3><p>Автоматическая нумерация, расстановка координат, подписей длин и уклонов.</p></div>
+        <div class="card reveal"><div class="ico">📤</div><h3>Экспорт и импорт</h3><p>Быстрая выгрузка координат в CSV/Excel и загрузка данных обратно в чертеж.</p></div>
+        <div class="card reveal"><div class="ico">🧩</div><h3>Реанимация кода</h3><p>Починим ваш старый LISP-код, который перестал работать после обновления версии.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="kicker">Порядок работы</div>
+        <h2>Как заказать разработку</h2>
+      </div>
+      <div class="steps">
+        <div class="step reveal"><h4>Задача</h4><p>Описываете алгоритм действий. Прикладываете пример файла (DWG).</p></div>
+        <div class="step reveal"><h4>Оценка</h4><p>Анализируем и называем стоимость. Оценка задачи — бесплатно.</p></div>
+        <div class="step reveal"><h4>Тестирование</h4><p>Запускаем прототип на ваших чертежах и учитываем правки.</p></div>
+        <div class="step reveal"><h4>Внедрение</h4><p>Отдаем готовый файл с подробной инструкцией по загрузке и использованию.</p></div>
+      </div>
+      <div class="note reveal"><b>Совет для ускорения:</b> пришлите скриншот или видео того, как вы делаете операцию вручную. Это поможет нам понять логику и точно оценить работу.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="cta-band reveal">
+        <div>
+          <h2>Не нашли нужную утилиту?</h2>
+          <p>Посмотрите готовые скрипты в каталоге или закажите индивидуальную разработку.</p>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <a class="btn btn-ghost" data-page="shop">Каталог</a>
+          <a class="btn btn-main" data-topic="LISP на заказ" data-page="contact">Заказать скрипт</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= МАГАЗИН ================= -->
+<div class="page" id="page-shop">
+  <section class="page-hero">
+    <div class="wrap reveal">
+      <div class="tag">● <b>Каталог</b> · готовые решения</div>
+      <h1>Готовые LISP-скрипты для AutoCAD</h1>
+      <p>Проверенные утилиты для типовых задач. Экономьте время на рутине — просто загрузите скрипт и начните работать быстрее.</p>
+    </div>
+  </section>
+
+  <section style="padding-top:20px">
+    <div class="wrap">
+      <div class="chips" id="chips"></div>
+      <div class="grid-3" id="products"></div>
+      <div class="note reveal">
+        <b>Как купить:</b> выберите нужный скрипт и нажмите «Купить». Откроется форма заявки с автоматическим заполнением. После оплаты вы получите файл .lsp и инструкцию на свой e-mail или в Telegram. 
+        <a data-topic="LISP на заказ" data-page="contact" style="color:var(--acc);cursor:pointer">Нужна доработка? Закажите индивидуальный скрипт</a>.
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= КОНТАКТЫ ================= -->
+<div class="page" id="page-contact">
+  <section class="page-hero">
+    <div class="wrap reveal">
+      <div class="tag">● Связь с нами</div>
+      <h1>Обсудим вашу задачу</h1>
+      <p>Заполните форму или напишите нам напрямую в мессенджер. Ответим на вопросы и предложим лучшее решение.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="contact-grid">
+        <form id="leadForm" class="reveal" novalidate>
+          <div>
+            <label for="name">Ваше имя</label>
+            <input id="name" name="name" placeholder="Как к вам обращаться?" required>
+          </div>
+          <div>
+            <label for="contact">Телефон, Telegram или e-mail</label>
+            <input id="contact" name="contact" placeholder="+7 ... / @username / mail@example.com" required>
+          </div>
+          <div>
+            <label for="topic">Что вас интересует?</label>
+            <select id="topic" name="topic">
+              <option>Замеры или чертежи</option>
+              <option>LISP на заказ</option>
+              <option>Покупка готового скрипта</option>
+              <option>Другое</option>
+            </select>
+          </div>
+          <div>
+            <label for="msg">Опишите задачу</label>
+            <textarea id="msg" name="msg" placeholder="Коротко о проекте, объёме работ и желаемых сроках"></textarea>
+          </div>
+          <button type="submit" class="btn btn-main">Отправить заявку</button>
+          <div class="form-msg" id="formMsg">✓ Открывается ваша почтовая программа. Если этого не произошло, напишите нам напрямую на почту из контактов справа.</div>
+        </form>
+
+        <div class="info-list reveal">
+          <div class="info-item"><div class="ico">📞</div><div><b>Телефон</b><span id="ciPhone"></span></div></div>
+          <div class="info-item"><div class="ico">✉️</div><div><b>E-mail</b><span id="ciMail"></span></div></div>
+          <div class="info-item"><div class="ico">💬</div><div><b>Telegram</b><span id="ciTg"></span></div></div>
+          <div class="info-item"><div class="ico">📍</div><div><b>География</b><span>Работаем по всей РФ · удалённо, выезд на замеры по договорённости</span></div></div>
+          <div class="info-item"><div class="ico">🕘</div><div><b>Режим работы</b><span>Пн–Пт, 09:00–18:00 (МСК)</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>© <span id="year"></span> DraftLine.pro — Замеры, проектирование, автоматизация AutoCAD</div>
+    <div><a data-page="home">Главная</a> · <a data-page="services">Услуги</a> · <a data-page="lisp">Разработка LISP</a> · <a data-page="shop">Скрипты</a> · <a data-page="contact">Контакты</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var CONFIG = {
+    email:    'hello@draftline.pro',
+    phone:    '+7 (900) 000-00-00',
+    telegram: '@draftline_pro',
+    currency: '₽'
+  };
+
+  var PRODUCTS = [
+    {name:'AreaSum',   cat:'Площади и размеры', cmd:'AREASUM',  price:490,
+     desc:'Мгновенно суммирует площади выбранных полилиний и штриховок, выводит итог в командную строку.'},
+    {name:'AreaLabel', cat:'Площади и размеры', cmd:'ALABEL',   price:790,
+     desc:'Автоматически подписывает площадь внутри каждого замкнутого контура текстом нужного формата.'},
+    {name:'LenSum',    cat:'Площади и размеры', cmd:'LENSUM',   price:490,
+     desc:'Считает общую длину линий, полилиний и дуг с возможностью разбивки по слоям.'},
+    {name:'AutoNum',   cat:'Оформление',        cmd:'AUTONUM',  price:890,
+     desc:'Быстрая нумерация текстов и блоков с заданным шагом и порядком обхода.'},
+    {name:'LayerFix',  cat:'Проверка и пакетная обработка', cmd:'LAYERFIX', price:690,
+     desc:'Наводит порядок в слоях: переносит объекты на нужные слои, удаляет пустые.'},
+    {name:'BatchPDF',  cat:'Проверка и пакетная обработка', cmd:'BATCHPDF', price:1490,
+     desc:'Пакетная печать листов из разных DWG в PDF с нумерацией файлов.'},
+    {name:'PointsOut', cat:'Экспорт',           cmd:'PTSOUT',   price:990,
+     desc:'Выгружает координаты точек и блоков в CSV для дальнейшей работы в Excel.'},
+    {name:'BlockTable',cat:'Экспорт',           cmd:'BLKTABLE', price:1290,
+     desc:'Собирает спецификацию блоков с атрибутами и вставляет её таблицей в чертёж.'}
+  ];
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+  document.getElementById('ciPhone').textContent = CONFIG.phone;
+  document.getElementById('ciMail').innerHTML = '<a href="mailto:'+CONFIG.email+'">'+CONFIG.email+'</a>';
+  document.getElementById('ciTg').innerHTML = '<a href="https://t.me/'+CONFIG.telegram.replace('@','')+'" target="_blank" rel="noopener">'+CONFIG.telegram+'</a>';
+
+  var pages = document.querySelectorAll('.page');
+  var navLinksBox = document.getElementById('navLinks');
+
+  function showPage(name, push){
+    pages.forEach(function(p){ p.classList.toggle('active', p.id === 'page-' + name); });
+    document.querySelectorAll('.nav-links a').forEach(function(a){
+      a.classList.toggle('active', a.dataset.page === name);
+    });
+    navLinksBox.classList.remove('open');
+    window.scrollTo({top:0, behavior:'smooth'});
+    document.querySelectorAll('.page.active .reveal').forEach(function(el){ el.classList.add('in'); });
+    if(push && history.pushState){ history.pushState({page:name}, '', '#' + name); }
+  }
+
+  document.addEventListener('click', function(e){
+    var el = e.target.closest('[data-page]');
+    if(!el) return;
+    e.preventDefault();
+    if(el.dataset.topic){ setTopic(el.dataset.topic); }
+    showPage(el.dataset.page, true);
+  });
+
+  document.getElementById('burger').addEventListener('click', function(){
+    navLinksBox.classList.toggle('open');
+  });
+
+  var start = (location.hash || '#home').replace('#','');
+  if(!document.getElementById('page-' + start)) start = 'home';
+  showPage(start, false);
+
+  window.addEventListener('popstate', function(){
+    var h = (location.hash || '#home').replace('#','');
+    if(document.getElementById('page-' + h)) showPage(h, false);
+  });
+
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+    });
+  },{threshold:.14});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  var chipsBox = document.getElementById('chips');
+  var prodBox  = document.getElementById('products');
+  var currentCat = 'Все';
+
+  function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function fmt(n){ return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,' '); }
+
+  function renderChips(){
+    var cats = ['Все'];
+    PRODUCTS.forEach(function(p){ if(cats.indexOf(p.cat) < 0) cats.push(p.cat); });
+    chipsBox.innerHTML = cats.map(function(c){
+      return '<button class="chip'+(c===currentCat?' on':'')+'" data-cat="'+esc(c)+'">'+esc(c)+'</button>';
+    }).join('');
+  }
+
+  function renderProducts(){
+    var list = PRODUCTS.filter(function(p){ return currentCat === 'Все' || p.cat === currentCat; });
+    prodBox.innerHTML = list.map(function(p){
+      var idx = PRODUCTS.indexOf(p);
+      return '<div class="card product hover in">' +
+        '<div class="meta"><span class="cat">'+esc(p.cat)+'</span><span class="cmd">'+esc(p.cmd)+'</span></div>' +
+        '<h3>'+esc(p.name)+'</h3>' +
+        '<p>'+esc(p.desc)+'</p>' +
+        '<div class="foot"><div class="price">'+fmt(p.price)+' <small>'+CONFIG.currency+'</small></div>' +
+        '<button class="btn btn-main btn-sm" data-buy="'+idx+'">Купить</button></div>' +
+        '</div>';
+    }).join('');
+  }
+
+  chipsBox.addEventListener('click', function(e){
+    var b = e.target.closest('.chip');
+    if(!b) return;
+    currentCat = b.dataset.cat;
+    renderChips(); renderProducts();
+  });
+
+  prodBox.addEventListener('click', function(e){
+    var b = e.target.closest('[data-buy]');
+    if(!b) return;
+    var p = PRODUCTS[+b.dataset.buy];
+    setTopic('Покупка готового скрипта');
+    document.getElementById('msg').value =
+      'Здравствуйте! Хочу приобрести скрипт «' + p.name + '» (команда ' + p.cmd + '), стоимость ' + fmt(p.price) + ' ' + CONFIG.currency +
+      '.\nМоя версия AutoCAD: ';
+    showPage('contact', true);
+  });
+
+  renderChips(); renderProducts();
+
+  var COMPARE = [
+    {title:'От замеров до чертежа',
+     cap:'Реальный объект и точный план в DWG',
+     before:'img/zamer-before.jpg',  after:'img/zamer-after.jpg'},
+    {title:'Приведение в порядок',
+     cap:'Чертёж до и после оформления по стандартам',
+     before:'img/chertezh-before.jpg', after:'img/chertezh-after.jpg'},
+    {title:'Работа LISP-скрипта',
+     cap:'Ручная работа до и после автоматизации',
+     before:'img/lisp-before.jpg',    after:'img/lisp-after.jpg'}
+  ];
+
+  function placeholder(isAfter, n){
+    var w = 420 + n*40, svg;
+    if(isAfter){
+      svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><rect width="800" height="600" fill="#0b1a26"/>'+
+        '<g stroke="#3ea6ff" stroke-width="3" fill="none"><rect x="100" y="140" width="'+w+'" height="320"/>'+
+        '<path d="M100 300H'+(100+w*0.55)+'V460"/></g>'+
+        '<g stroke="#22d3a6" stroke-width="2" fill="none"><path d="M100 110H'+(100+w)+'M100 100V120M'+(100+w)+' 100V120"/></g>'+
+        '<text x="'+(100+w/2)+'" y="104" fill="#22d3a6" font-family="monospace" font-size="20" text-anchor="middle">'+w*10+'</text>'+
+        '<text x="400" y="540" fill="#8b98a9" font-family="sans-serif" font-size="22" text-anchor="middle">СТАЛО · пример, замените картинкой</text></svg>';
+    }else{
+      svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><rect width="800" height="600" fill="#1b1f26"/>'+
+        '<g stroke="#5b6b7d" stroke-width="3" fill="none" stroke-dasharray="14 7">'+
+        '<path d="M96 146L'+(104+w)+' 138L'+(98+w)+' 466L108 458Z"/><path d="M100 296L'+(90+w*0.55)+' 304"/></g>'+
+        '<text x="400" y="540" fill="#8b98a9" font-family="sans-serif" font-size="22" text-anchor="middle">БЫЛО · пример, замените картинкой</text></svg>';
+    }
+    return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+  }
+
+  var cmpBox = document.getElementById('compare');
+  cmpBox.innerHTML = COMPARE.map(function(c, i){
+    return '<div class="ba-item reveal in">' +
+      '<figure class="ba" style="--pos:50%">' +
+        '<img class="ba-a" alt="Стало: '+esc(c.title)+'" loading="lazy">' +
+        '<div class="ba-before"><img class="ba-b" alt="Было: '+esc(c.title)+'" loading="lazy"></div>' +
+        '<span class="ba-lbl l">Было</span><span class="ba-lbl r">Стало</span>' +
+        '<div class="ba-handle"><i>⇄</i></div>' +
+        '<input type="range" min="0" max="100" value="50" aria-label="Сравнить было и стало: '+esc(c.title)+'">' +
+      '</figure>' +
+      '<div class="cap"><b>'+esc(c.title)+'</b>'+esc(c.cap)+'</div></div>';
+  }).join('');
+
+  Array.prototype.forEach.call(cmpBox.querySelectorAll('.ba-item'), function(item, i){
+    var c = COMPARE[i];
+    var fig = item.querySelector('.ba');
+    var imgA = item.querySelector('.ba-a'), imgB = item.querySelector('.ba-b');
+    function setup(img, src, isAfter){
+      var ph = placeholder(isAfter, i);
+      img.addEventListener('error', function(){ if(img.src !== ph) img.src = ph; });
+      img.src = src || ph;
+    }
+    setup(imgB, c.before, false);
+    setup(imgA, c.after, true);
+    item.querySelector('input').addEventListener('input', function(e){
+      fig.style.setProperty('--pos', e.target.value + '%');
+    });
+  });
+
+  var form = document.getElementById('leadForm');
+  var msg = document.getElementById('formMsg');
+
+  function setTopic(t){
+    var sel = document.getElementById('topic');
+    for(var i=0;i<sel.options.length;i++){
+      if(sel.options[i].text === t){ sel.selectedIndex = i; return; }
+    }
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var name = form.name.value.trim();
+    var contact = form.contact.value.trim();
+    if(!name || !contact){ alert('Пожалуйста, заполните имя и контакт.'); return; }
+    var subject = 'Заявка с сайта: ' + form.topic.value;
+    var body = 'Имя: ' + name + '\nКонтакт: ' + contact + '\nТема: ' + form.topic.value + '\n\n' + form.msg.value;
+    window.location.href = 'mailto:' + CONFIG.email + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    msg.style.display = 'block';
+    setTimeout(function(){ msg.style.display = 'none'; }, 10000);
+  });
+})();
+</script>
+</body>
+</html>
