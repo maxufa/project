@@ -37,7 +37,7 @@ a{color:inherit;text-decoration:none}
 .bg-drafting::before { content: ""; position: absolute; inset: 16px; border: 1px solid var(--line); opacity: 0.6; border-radius: 4px; }
 .bg-drafting::after { content: ""; position: absolute; inset: 24px; border: 1px solid var(--line); opacity: 0.3; border-radius: 2px; }
 
-/* ---------- ЛОГОТИП (Увеличен в 2 раза) ---------- */
+/* ---------- ЛОГОТИП ---------- */
 .logo-img {
   height: 76px;
   width: auto;
@@ -55,9 +55,9 @@ header{
   border-bottom:1px solid var(--line);
 }
 nav{display:flex;align-items:center;justify-content:space-between;height:80px;gap:16px}
-.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;cursor:pointer}
-.nav-links{display:flex;gap:18px;font-size:14.5px;color:var(--muted)}
-.nav-links a{transition:.2s;position:relative;padding:4px 0;cursor:pointer;white-space:nowrap}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;cursor:pointer;flex-shrink:0;}
+.nav-links{display:flex;gap:16px;font-size:13.5px;color:var(--muted);align-items:center;flex-wrap:nowrap;}
+.nav-links a{transition:.2s;position:relative;padding:4px 0;cursor:pointer;text-align:center;line-height:1.3;}
 .nav-links a:hover{color:var(--txt)}
 .nav-links a.active{color:var(--txt)}
 .nav-links a.active::after{
@@ -67,7 +67,7 @@ nav{display:flex;align-items:center;justify-content:space-between;height:80px;ga
 .burger{display:none;background:none;border:1px solid var(--line);color:var(--txt);width:42px;height:38px;border-radius:10px;font-size:18px;cursor:pointer}
 .btn{
   display:inline-block;padding:11px 20px;border-radius:11px;font-weight:600;
-  font-size:14.5px;border:1px solid transparent;cursor:pointer;transition:.22s;font-family:inherit;
+  font-size:14.5px;border:1px solid transparent;cursor:pointer;transition:.22s;font-family:inherit;flex-shrink:0;
 }
 .btn-main{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#04121f}
 .btn-main:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(62,166,255,.28)}
@@ -210,32 +210,59 @@ a.card:hover,.card.hover:hover{transform:translateY(-5px);border-color:#33506d;b
 .portfolio-info p { font-size: 13.5px; color: var(--muted); flex: 1; margin-bottom: 15px; }
 .portfolio-actions { display: flex; gap: 10px; }
 
-/* Сетка примеров работ (дополнительные фото) */
+/* ---------- СЕТКИ ПРИМЕРОВ РАБОТ ---------- */
 .work-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
   margin-top: 20px;
+}
+.work-grid-facades {
+  grid-template-columns: repeat(2, 1fr);
 }
 .work-item {
   background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); 
   overflow: hidden; cursor: zoom-in; transition: .25s;
 }
 .work-item:hover { border-color: var(--acc); transform: translateY(-3px); }
-.work-item img { width: 100%; height: 220px; object-fit: cover; display: block; }
+.work-item img { width: 100%; height: 250px; object-fit: cover; display: block; }
 
-/* Лайтбокс */
+/* Сетка для двух карточек (Электрика и Ведомость) */
+.grid-resp-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  margin-top: 22px;
+}
+
+/* ---------- ЛАЙТБОКС (ПОЛНОЭКРАННЫЙ ПРОСМОТР) ---------- */
 .lightbox {
   display: none; position: fixed; inset: 0; z-index: 1000;
-  background: rgba(0,0,0,0.9); padding: 20px; align-items: center; justify-content: center;
-  cursor: zoom-out;
+  background: rgba(0,0,0,0.92); padding: 20px;
+  align-items: center; justify-content: center;
+  user-select: none;
 }
 .lightbox.active { display: flex; }
-.lightbox img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px; }
-.lightbox-close {
-  position: absolute; top: 20px; right: 30px; font-size: 40px; color: #fff; cursor: pointer;
-  font-family: sans-serif; line-height: 1; z-index: 1001;
+.lightbox img {
+  max-width: 90%; max-height: 90%; object-fit: contain;
+  border-radius: 8px; box-shadow: 0 0 40px rgba(0,0,0,0.8);
 }
+.lb-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  background: rgba(255,255,255,0.1); border: none; color: #fff;
+  width: 60px; height: 60px; border-radius: 50%; cursor: pointer;
+  font-size: 40px; display: flex; align-items: center; justify-content: center;
+  transition: 0.2s; z-index: 1002;
+}
+.lb-nav:hover { background: rgba(255,255,255,0.25); }
+.lb-prev { left: 30px; }
+.lb-next { right: 30px; }
+.lb-close {
+  position: absolute; top: 20px; right: 30px; font-size: 40px; color: #fff; cursor: pointer;
+  font-family: sans-serif; line-height: 1; z-index: 1002;
+  background: none; border: none; transition: 0.2s;
+}
+.lb-close:hover { color: var(--acc); }
 
 /* ---------- КОНТАКТЫ ---------- */
 .contact-grid{display:grid;grid-template-columns:1fr; gap:24px; max-width:600px; margin:0 auto;}
@@ -279,32 +306,43 @@ footer a:hover{color:var(--acc)}
 .page.active{display:block;animation:fade .4s ease}
 @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
+@media(max-width:1200px){
+  .nav-links{font-size:12.5px; gap:12px;}
+  nav{height:auto; min-height:80px; padding:10px 0;}
+}
 @media(max-width:1020px){
   .grid-4{grid-template-columns:1fr 1fr}
   .equip-grid, .portfolio-grid { grid-template-columns: 1fr 1fr; }
+  .work-grid { grid-template-columns: repeat(2, 1fr); }
+  .work-grid-facades { grid-template-columns: repeat(2, 1fr); }
+  .nav-links{display:none;}
+  .burger{display:block;}
 }
 @media(max-width:960px){
   .hero .wrap{grid-template-columns:1fr}
   .board{margin:0 auto}
   .grid-3,.steps{grid-template-columns:1fr 1fr}
   .grid-2{grid-template-columns:1fr}
-  .burger{display:block}
   .nav-cta{display:none}
   .nav-links{
     display:none;position:absolute;top:80px;left:0;right:0;flex-direction:column;gap:0;
     background:rgba(5,7,10,.97);border-bottom:1px solid var(--line);padding:8px 22px 14px;
   }
   .nav-links.open{display:flex}
-  .nav-links a{padding:12px 0;border-bottom:1px solid var(--line)}
+  .nav-links a{padding:12px 0;border-bottom:1px solid var(--line);text-align:left;}
   .nav-links a.active::after{display:none}
 }
 @media(max-width:600px){
-  .grid-3,.grid-4,.steps,.equip-grid, .portfolio-grid, .work-grid {grid-template-columns:1fr}
+  .grid-3,.grid-4,.steps,.equip-grid, .portfolio-grid, .work-grid, .work-grid-facades {grid-template-columns:1fr}
+  .grid-resp-2 { grid-template-columns: 1fr; }
   section{padding:56px 0}
   .hero{padding:60px 0 40px}
   .cta-band{padding:28px}
   .tg-card { flex-direction: column; text-align: center; }
   .logo-img { height: 50px; }
+  .lb-nav { width: 40px; height: 40px; font-size: 24px; }
+  .lb-prev { left: 10px; }
+  .lb-next { right: 10px; }
 }
 </style>
 </head>
@@ -338,9 +376,10 @@ footer a:hover{color:var(--acc)}
       </a>
       <div class="nav-links" id="navLinks">
         <a data-page="home" class="active">Главная</a>
-        <a data-page="services">Чертежи и замеры</a>
-        <a data-page="lisp">Адаптация LISP</a>
-        <a data-page="shop">Готовые скрипты</a>
+        <a data-page="services">Чертежи, замеры<br>планов и фасадов</a>
+        <a data-page="lisp">Готовые скрипты.<br>Адаптация по Вас</a>
+        <a data-page="shop">Съемка криволинейных<br>поверхностей</a>
+        <a data-page="tech3d">Техническое 3D<br>моделирование для 3D печати</a>
         <a data-page="contact">Контакты</a>
       </div>
       <a class="btn btn-main nav-cta" data-page="contact">Обсудить проект</a>
@@ -401,22 +440,18 @@ footer a:hover{color:var(--acc)}
       <div class="grid-4">
         <a class="card reveal" data-page="services">
           <div class="ico">📐</div>
-          <h3>Чертежи</h3>
-          <p>Рабочая и исполнительная документация. Оформление по ГОСТ/СПДС или вашему шаблону.</p>
+          <h3>Чертежи и замеры</h3>
+          <p>Рабочая документация, обмерные работы и оформление по ГОСТ/СПДС или вашему шаблону.</p>
           <span class="more">Подробнее →</span>
         </a>
-        <a class="card reveal" data-page="services">
-          <div class="ico">📏</div>
-          <h3>Замеры</h3>
-          <p>Обмерные работы в Уфе и Башкортостане с использованием лазерного оборудования Leica.</p>
-          <span class="more">Подробнее →</span>
-        </a>
+        
         <a class="card reveal" data-page="services">
           <div class="ico">📦</div>
-          <h3>Техническое 3D-моделирование</h3>
-          <p>Моделирование для 3D печати корпусов деталей, потерянных сломанных элементов.</p>
+          <h3>Построение помещений в 3D</h3>
+          <p>Создание объемных моделей по обмерам для визуализации и проектирования.</p>
           <span class="more">Подробнее →</span>
         </a>
+        
         <a class="card reveal" data-page="lisp">
           <div class="ico">⚙️</div>
           <h3>Адаптация LISP</h3>
@@ -517,7 +552,9 @@ footer a:hover{color:var(--acc)}
           </ul>
         </div>
       </div>
-      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:22px; margin-top:22px;">
+      
+      <!-- ДВА БЛОКА: 2 колонки на ПК, 1 на мобильных -->
+      <div class="grid-resp-2">
         <div class="card reveal">
           <p style="color:var(--txt);">⚡ <strong>Электрика:</strong> При необходимости можно нанести на план все выпуски для электроустановочных изделий (розетки, выключатели, кабельные выпуски и прочее).</p>
         </div>
@@ -536,17 +573,22 @@ footer a:hover{color:var(--acc)}
         <div class="reveal" id="compare-zamer" style="max-width: 600px; margin-bottom: 40px;"></div>
         
         <div class="sec-head reveal" style="margin-bottom: 20px;">
-          <h2>Дополнительные примеры</h2>
+          <h2>Чертежи примеров</h2>
         </div>
+        
+        <!-- СТАТИЧНАЯ СЕТКА ПЛАНОВ (4 ОКНА) -->
         <div class="work-grid reveal">
-          <div class="work-item" onclick="openLightbox('img/plan-example1.jpg')">
+          <div class="work-item" onclick="openGallery(0)">
             <img src="img/plan-example1.jpg" alt="Пример плана 1" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото plan-example1.jpg</div>'">
           </div>
-          <div class="work-item" onclick="openLightbox('img/plan-example2.jpg')">
+          <div class="work-item" onclick="openGallery(1)">
             <img src="img/plan-example2.jpg" alt="Пример плана 2" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото plan-example2.jpg</div>'">
           </div>
-          <div class="work-item" onclick="openLightbox('img/plan-example3.jpg')">
+          <div class="work-item" onclick="openGallery(2)">
             <img src="img/plan-example3.jpg" alt="Пример плана 3" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото plan-example3.jpg</div>'">
+          </div>
+          <div class="work-item" onclick="openGallery(3)">
+            <img src="img/plan-example4.jpg" alt="Пример плана 4" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото plan-example4.jpg</div>'">
           </div>
         </div>
       </div>
@@ -565,7 +607,7 @@ footer a:hover{color:var(--acc)}
       <div class="equip-grid">
         <div class="equip-card reveal">
           <div class="equip-img-wrap">
-            <img src="img/leica-s910.jpg" alt="Leica DISTO S910" class="equip-img" onerror="this.style.display='none'">
+            <img src="img/leica-s910.png" alt="Leica DISTO S910" class="equip-img" onerror="this.style.display='none'">
             <span class="equip-lbl">Флагман</span>
           </div>
           <h4>Leica DISTO S910</h4>
@@ -609,16 +651,16 @@ footer a:hover{color:var(--acc)}
         <div class="reveal" id="compare-chertezh" style="max-width: 600px;"></div>
       </div>
 
-      <!-- ПРИМЕРЫ РАБОТ (ФАСАДЫ) -->
+      <!-- СТАТИЧНАЯ СЕТКА ФАСАДОВ -->
       <div style="margin-top: 30px;">
-        <div class="work-grid reveal">
-          <div class="work-item" onclick="openLightbox('img/facade-example1.jpg')">
+        <div class="work-grid work-grid-facades reveal">
+          <div class="work-item" onclick="openFacadeGallery(0)">
             <img src="img/facade-example1.jpg" alt="Пример фасада 1" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото facade-example1.jpg</div>'">
           </div>
-          <div class="work-item" onclick="openLightbox('img/facade-example2.jpg')">
+          <div class="work-item" onclick="openFacadeGallery(1)">
             <img src="img/facade-example2.jpg" alt="Пример фасада 2" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото facade-example2.jpg</div>'">
           </div>
-          <div class="work-item" onclick="openLightbox('img/facade-example3.jpg')">
+          <div class="work-item" onclick="openFacadeGallery(2)">
             <img src="img/facade-example3.jpg" alt="Пример фасада 3" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото facade-example3.jpg</div>'">
           </div>
         </div>
@@ -626,22 +668,25 @@ footer a:hover{color:var(--acc)}
     </div>
   </section>
 
-  <!-- БЛОК 4: 3D-МОДЕЛИ (ТЕХНИЧЕСКОЕ) -->
+  <!-- БЛОК 4: ПОСТРОЕНИЕ ПОМЕЩЕНИЙ В 3D (ЗАМЕНА ТЕХНИЧЕСКОГО 3D) -->
   <section id="block-3d" style="padding-top: 40px; border-top: 1px dashed var(--line);">
     <div class="wrap">
       <div class="sec-head reveal">
-        <h2>📦 Техническое 3D-моделирование</h2>
-        <p>Моделирование для 3д печати корпусов деталей, потерянных сломанных элементов, шестерен и прочего.</p>
+        <h2>📦 Построение помещений в 3D</h2>
+        <p>Создание объемных моделей помещений по вашим обмерам для визуализации, дизайна и проверки коллизий.</p>
       </div>
 
-      <!-- ПРИМЕРЫ РАБОТ (3D) -->
+      <!-- СТАТИЧНАЯ СЕТКА 3D (ОТДЕЛЬНАЯ) -->
       <div style="margin-top: 30px;">
-        <div class="work-grid reveal" style="grid-template-columns: 1fr 1fr;">
-          <div class="work-item" onclick="openLightbox('img/3d-example1.jpg')">
-            <img src="img/3d-example1.jpg" alt="Пример 3D модели 1" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото 3d-example1.jpg</div>'">
+        <div class="work-grid reveal">
+          <div class="work-item" onclick="openRoom3DGallery(0)">
+            <img src="img/room3d-example1.jpg" alt="Пример 3D комнаты 1" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото room3d-example1.jpg</div>'">
           </div>
-          <div class="work-item" onclick="openLightbox('img/3d-example2.jpg')">
-            <img src="img/3d-example2.jpg" alt="Пример 3D модели 2" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото 3d-example2.jpg</div>'">
+          <div class="work-item" onclick="openRoom3DGallery(1)">
+            <img src="img/room3d-example2.jpg" alt="Пример 3D комнаты 2" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото room3d-example2.jpg</div>'">
+          </div>
+          <div class="work-item" onclick="openRoom3DGallery(2)">
+            <img src="img/room3d-example3.jpg" alt="Пример 3D комнаты 3" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото room3d-example3.jpg</div>'">
           </div>
         </div>
       </div>
@@ -661,84 +706,8 @@ footer a:hover{color:var(--acc)}
   </section>
 </div>
 
-<!-- ================= LISP НА ЗАКАЗ ================= -->
+<!-- ================= ГОТОВЫЕ СКРИПТЫ ================= -->
 <div class="page" id="page-lisp">
-  <section class="page-hero">
-    <div class="wrap reveal">
-      <div class="tag">● <b>AutoLISP</b></div>
-      <h1>Адаптация LISP для экономии Вашего времени</h1>
-      <p>Избавим вас от монотонных кликов. Напишем скрипт, который будет выполнять рутинные операции за пару секунд, с учетом специфики именно вашей работы.</p>
-    </div>
-  </section>
-
-  <section>
-    <div class="wrap">
-      <div class="code-wrap reveal">
-        <div>
-          <h2 style="font-size:clamp(22px,2.6vw,30px);letter-spacing:-.4px;margin-bottom:14px">Как выглядит готовое решение</h2>
-          <p style="color:var(--muted);margin-bottom:18px">
-            Вы получаете не просто код, а готовый инструмент. Файл .lsp с понятной командой, который можно добавить в автозагрузку и использовать на любом ПК в офисе.
-          </p>
-          <a class="btn btn-main" data-page="contact">Поставить задачу</a>
-        </div>
-
-        <div class="code-box">
-          <div class="bar"><i></i><i></i><i></i><span style="margin-left:8px">sum-areas.lsp</span></div>
-<pre><span class="cmt">;; Подсчет суммы площадей выбранных объектов</span>
-(<span class="fn">defun</span> c:AreaSum ( <span class="fn">/</span> ss i e a total )
-  (<span class="fn">setq</span> total <span class="num">0.0</span>)
-  (<span class="fn">if</span> (<span class="fn">setq</span> ss (<span class="fn">ssget</span> <span class="str">'((0 . "LWPOLYLINE"))</span>))
-    (<span class="fn">progn</span>
-      (<span class="fn">setq</span> i <span class="num">0</span>)
-      (<span class="fn">repeat</span> (<span class="fn">sslength</span> ss)
-        (<span class="fn">setq</span> e (<span class="fn">ssname</span> ss i)
-              a (<span class="fn">vla-get-Area</span>
-                  (<span class="fn">vlax-ename-&gt;vla-object</span> e)))
-        (<span class="fn">setq</span> total (<span class="fn">+</span> total a) i (<span class="fn">1+</span> i)))
-      (<span class="fn">princ</span> (<span class="fn">strcat</span> <span class="str">"\nИтого: "</span>
-             (<span class="fn">rtos</span> total <span class="num">2</span> <span class="num">2</span>) <span class="str">" кв.м."</span>))))
-  (<span class="fn">princ</span>))
-</pre>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <div class="wrap">
-      <div class="sec-head reveal">
-        <div class="kicker">Зона автоматизации</div>
-        <h2>Что мы можем запрограммировать</h2>
-      </div>
-      <div class="grid-3">
-        <div class="card reveal"><div class="ico">⚡</div><h3>Массовая обработка DWG</h3><p>Пакетная чистка, аудит, замена блоков, копирование настроек слоев.</p></div>
-        <div class="card reveal"><div class="ico">📋</div><h3>Генерация таблиц</h3><p>Умный сбор спецификаций, ведомостей и любых таблиц из атрибутов блоков.</p></div>
-        <div class="card reveal"><div class="ico">✅</div><h3>Контроль качества</h3><p>Проверка чертежа на "мусор", дубликаты, пустые объекты и неправильные слои.</p></div>
-        <div class="card reveal"><div class="ico">🔢</div><h3>Умные подписи</h3><p>Автоматическая нумерация, расстановка координат, подписей длин и уклонов.</p></div>
-        <div class="card reveal"><div class="ico">📤</div><h3>Экспорт и импорт</h3><p>Быстрая выгрузка координат в CSV/Excel и загрузка данных обратно в чертеж.</p></div>
-        <div class="card reveal"><div class="ico">🧩</div><h3>Реанимация кода</h3><p>Починим ваш старый LISP-код, который перестал работать после обновления версии.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <div class="wrap">
-      <div class="cta-band reveal">
-        <div>
-          <h2>Не нашли нужную утилиту?</h2>
-          <p>Посмотрите готовые скрипты в каталоге или закажите индивидуальную разработку.</p>
-        </div>
-        <div style="display:flex;gap:12px;flex-wrap:wrap">
-          <a class="btn btn-ghost" data-page="shop">Каталог</a>
-          <a class="btn btn-main" data-page="contact">Связаться</a>
-        </div>
-      </div>
-    </div>
-  </section>
-</div>
-
-<!-- ================= МАГАЗИН ================= -->
-<div class="page" id="page-shop">
   <section class="page-hero">
     <div class="wrap reveal">
       <div class="tag">● <b>Каталог</b> · готовые решения</div>
@@ -753,6 +722,121 @@ footer a:hover{color:var(--acc)}
       <div class="grid-3" id="products"></div>
       <div class="note reveal">
         <b>Как загрузить скрипт в AutoCAD:</b> скачайте файл .lsp, в AutoCAD введите команду <code>APPLOAD</code> (или перетащите файл в окно программы), выберите скачанный файл и нажмите «Загрузить». Команда для запуска указана в карточке скрипта.
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= СЪЕМКА КРИВОЛИНЕЙНЫХ ПОВЕРХНОСТЕЙ ================= -->
+<div class="page" id="page-shop">
+  <section class="page-hero">
+    <div class="wrap reveal">
+      <div class="tag">● Съемка криволинейных поверхностей</div>
+      <h1>Точная съемка сложных форм</h1>
+      <p>Выполняем съемку криволинейных поверхностей любой сложности для дальнейшего проектирования, изготовления или реставрации.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="grid-2">
+        <!-- ПРИМЕР 1: СТУПЕНИ -->
+        <div class="card reveal">
+          <div class="portfolio-img-wrap" onclick="openLightbox('img/step-example.jpg')" style="margin-bottom:15px; border-radius:8px;">
+            <img src="img/step-example.jpg" alt="Съемка ступеней" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото step-example.jpg</div>'">
+          </div>
+          <h3>Съемка ступеней</h3>
+          <p>Точные обмеры винтовых, поворотных и прямых лестниц. Создание 3D-модели или чертежей для изготовления новых ступеней или облицовки.</p>
+        </div>
+
+        <!-- ПРИМЕР 2: СТОЛЕШНИЦЫ -->
+        <div class="card reveal">
+          <div class="portfolio-img-wrap" onclick="openLightbox('img/countertop-example.jpg')" style="margin-bottom:15px; border-radius:8px;">
+            <img src="img/countertop-example.jpg" alt="Съемка столешницы" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото countertop-example.jpg</div>'">
+          </div>
+          <h3>Съемка столешницы</h3>
+          <p>Обмеры столешниц сложной формы (с изгибами, скруглениями, под сращивание). Создание шаблона для точного раскроя материала.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="cta-band reveal">
+        <div>
+          <h2>Нужна съемка сложной поверхности?</h2>
+          <p>Пришлите фото или опишите задачу — мы предложим решение и оценим сроки.</p>
+        </div>
+        <a class="btn btn-main" data-page="contact">Связаться</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= ТЕХНИЧЕСКОЕ 3D ================= -->
+<div class="page" id="page-tech3d">
+  <section class="page-hero">
+    <div class="wrap reveal">
+      <div class="tag">● Техническое 3D</div>
+      <h1>Моделирование для 3D-печати и производства</h1>
+      <p>Создание точных 3D-моделей для восстановления утраченных деталей, корпусов, шестерен и прочих элементов.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="grid-2" style="align-items:center;">
+        <div class="reveal">
+          <h2 style="margin-bottom: 15px;">Что мы моделируем:</h2>
+          <ul style="list-style:none; display:grid; gap:10px;">
+            <li style="padding-left:20px; position:relative;"><span style="position:absolute; left:0; color:var(--acc2);">▸</span> <strong>Корпуса деталей</strong> — восстановление или создание новых.</li>
+            <li style="padding-left:20px; position:relative;"><span style="position:absolute; left:0; color:var(--acc2);">▸</span> <strong>Потерянные сломанные элементы</strong> — оцифровка и печать.</li>
+            <li style="padding-left:20px; position:relative;"><span style="position:absolute; left:0; color:var(--acc2);">▸</span> <strong>Шестерни, втулки, крепеж</strong> — изготовление по образцу.</li>
+            <li style="padding-left:20px; position:relative;"><span style="position:absolute; left:0; color:var(--acc2);">▸</span> <strong>Прототипы и макеты</strong> — для тестирования и презентаций.</li>
+          </ul>
+        </div>
+        <div class="reveal">
+          <div class="card">
+            <p style="margin-bottom:10px;"><strong>Как это работает:</strong></p>
+            <p style="font-size:13.5px; color:var(--muted);">Мы оцифровываем ваш объект, создаем точную 3D-модель (CAD), подготавливаем файл для печати (STL/GCODE) или отправляем на производство.</p>
+            <p style="margin-top:15px;"><a href="#" data-page="contact" class="btn btn-main btn-sm">Обсудить проект</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <h2>Примеры работ</h2>
+        <p>Ниже представлены фотографии изготовленных деталей и 3D-моделей.</p>
+      </div>
+      
+      <!-- СТАТИЧНАЯ СЕТКА 3D (ТЕХНИЧЕСКАЯ) -->
+      <div class="work-grid reveal">
+        <div class="work-item" onclick="openTech3DGallery(0)">
+          <img src="img/tech3d-example1.jpg" alt="Пример технической 3D модели 1" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото tech3d-example1.jpg</div>'">
+        </div>
+        <div class="work-item" onclick="openTech3DGallery(1)">
+          <img src="img/tech3d-example2.jpg" alt="Пример технической 3D модели 2" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото tech3d-example2.jpg</div>'">
+        </div>
+        <div class="work-item" onclick="openTech3DGallery(2)">
+          <img src="img/tech3d-example3.jpg" alt="Пример технической 3D модели 3" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото tech3d-example3.jpg</div>'">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="cta-band reveal">
+        <div>
+          <h2>Нужна 3D-модель или печать детали?</h2>
+          <p>Пришлите фото или образец, мы оценим стоимость и сроки.</p>
+        </div>
+        <a class="btn btn-main" data-page="contact">Связаться</a>
       </div>
     </div>
   </section>
@@ -796,7 +880,6 @@ footer a:hover{color:var(--acc)}
           </div>
         </div>
 
-        <!-- ЛОГОТИП В КОНТАКТАХ (Увеличен) -->
         <div style="text-align: center; margin-top: 20px;">
           <img src="img/logo.png" alt="Логотип" style="height: 120px; width: auto; background: rgba(255,255,255,0.95); padding: 15px 30px; border-radius: 12px; display: inline-block;" onerror="this.style.display='none'">
         </div>
@@ -814,14 +897,24 @@ footer a:hover{color:var(--acc)}
       <img src="img/logo.png" alt="Логотип" style="height: 48px; background: rgba(255,255,255,0.95); padding: 6px 12px; border-radius: 6px;" onerror="this.style.display='none'">
       <span>© <span id="year"></span> М — Замеры, проектирование, автоматизация AutoCAD</span>
     </div>
-    <div><a data-page="home">Главная</a> · <a data-page="services">Услуги</a> · <a data-page="lisp">Разработка LISP</a> · <a data-page="shop">Скрипты</a> · <a data-page="contact">Контакты</a> · <a href="https://maxufa.github.io/project/" target="_blank">maxufa.github.io/project/</a></div>
+    <div>
+      <a data-page="home">Главная</a> · 
+      <a data-page="services">Услуги</a> · 
+      <a data-page="lisp">Разработка LISP</a> · 
+      <a data-page="shop">Скрипты</a> · 
+      <a data-page="tech3d">Техническое 3D</a> · 
+      <a data-page="contact">Контакты</a> · 
+      <a href="https://maxufa.github.io/project/" target="_blank">maxufa.github.io/project/</a>
+    </div>
   </div>
 </footer>
 
-<!-- ЛАЙТБОКС -->
-<div id="lightbox" class="lightbox" onclick="closeLightbox()">
-  <span class="lightbox-close">&times;</span>
+<!-- ================ ЛАЙТБОКС (ПОЛНОЭКРАННЫЙ) ================= -->
+<div id="lightbox" class="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">&times;</button>
+  <button class="lb-nav lb-prev" onclick="prevImage()">&#10094;</button>
   <img id="lightbox-img" src="" alt="Просмотр">
+  <button class="lb-nav lb-next" onclick="nextImage()">&#10095;</button>
 </div>
 
 <script>
@@ -851,14 +944,87 @@ footer a:hover{color:var(--acc)}
      desc:'Собирает спецификацию блоков с атрибутами и вставляет её таблицей в чертёж.'}
   ];
 
+  // --- ЛОГИКА ЛАЙТБОКСА ---
+  var currentImages = [];
+  var currentIndex = 0;
+
+  var plansImages = ['img/plan-example1.jpg', 'img/plan-example2.jpg', 'img/plan-example3.jpg', 'img/plan-example4.jpg'];
+  var facadeImages = ['img/facade-example1.jpg', 'img/facade-example2.jpg', 'img/facade-example3.jpg'];
+  var room3dImages = ['img/room3d-example1.jpg', 'img/room3d-example2.jpg', 'img/room3d-example3.jpg'];
+  var tech3dImages = ['img/tech3d-example1.jpg', 'img/tech3d-example2.jpg', 'img/tech3d-example3.jpg'];
+
+  window.openGallery = function(index) {
+    currentImages = plansImages;
+    currentIndex = index;
+    showLightboxImage();
+  };
+  window.openFacadeGallery = function(index) {
+    currentImages = facadeImages;
+    currentIndex = index;
+    showLightboxImage();
+  };
+  window.openRoom3DGallery = function(index) {
+    currentImages = room3dImages;
+    currentIndex = index;
+    showLightboxImage();
+  };
+  window.openTech3DGallery = function(index) {
+    currentImages = tech3dImages;
+    currentIndex = index;
+    showLightboxImage();
+  };
+
   window.openLightbox = function(src) {
-    if(!src) return;
-    document.getElementById('lightbox-img').src = src;
+    currentImages = [src];
+    currentIndex = 0;
+    showLightboxImage();
+  };
+
+  function showLightboxImage() {
+    var imgSrc = currentImages[currentIndex];
+    document.getElementById('lightbox-img').src = imgSrc;
     document.getElementById('lightbox').classList.add('active');
+    
+    var prevBtn = document.querySelector('.lb-prev');
+    var nextBtn = document.querySelector('.lb-next');
+    if(currentImages.length <= 1) {
+      prevBtn.style.display = 'none';
+      nextBtn.style.display = 'none';
+    } else {
+      prevBtn.style.display = 'flex';
+      nextBtn.style.display = 'flex';
+    }
   }
+
   window.closeLightbox = function() {
     document.getElementById('lightbox').classList.remove('active');
-  }
+  };
+
+  window.prevImage = function() {
+    if(currentImages.length <= 1) return;
+    currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
+    showLightboxImage();
+  };
+
+  window.nextImage = function() {
+    if(currentImages.length <= 1) return;
+    currentIndex = (currentIndex + 1) % currentImages.length;
+    showLightboxImage();
+  };
+
+  document.getElementById('lightbox').addEventListener('click', function(e) {
+    if(e.target === this || e.target.classList.contains('lb-close')) {
+      closeLightbox();
+    }
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if(!document.getElementById('lightbox').classList.contains('active')) return;
+    if(e.key === 'Escape') closeLightbox();
+    if(e.key === 'ArrowLeft') prevImage();
+    if(e.key === 'ArrowRight') nextImage();
+  });
+
 
   document.getElementById('year').textContent = new Date().getFullYear();
 
