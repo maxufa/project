@@ -1161,33 +1161,23 @@ footer a:hover{color:var(--acc)}
     closeMenu();
   });
 
-  // === ЗАКРЫТИЕ ПО СВАЙПУ ВНЕ МЕНЮ ===
-  var touchStartX = 0, touchStartY = 0, touchMoved = false;
-  var SWIPE_THRESHOLD = 30;
+  // === ЗАКРЫТИЕ ПО ТАПУ/СВАЙПУ ВНЕ МЕНЮ ===
+  var touchStartedOutside = false;
 
   document.addEventListener('touchstart', function(e){
     if(!navLinksBox.classList.contains('open')) return;
     if(e.touches.length !== 1) return;
-    if(e.target.closest('#navLinks') || e.target.closest('#burger')) return;
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-    touchMoved = false;
-  }, { passive: true });
-
-  document.addEventListener('touchmove', function(e){
-    if(!navLinksBox.classList.contains('open')) return;
-    if(e.touches.length !== 1) return;
-    var dx = Math.abs(e.touches[0].clientX - touchStartX);
-    var dy = Math.abs(e.touches[0].clientY - touchStartY);
-    if(dx > SWIPE_THRESHOLD || dy > SWIPE_THRESHOLD) touchMoved = true;
+    var inMenu = e.target.closest('#navLinks');
+    var inBurger = e.target.closest('#burger');
+    touchStartedOutside = !inMenu && !inBurger;
   }, { passive: true });
 
   document.addEventListener('touchend', function(e){
     if(!navLinksBox.classList.contains('open')) return;
-    if(touchMoved){
+    if(touchStartedOutside){
       closeMenu();
     }
-    touchMoved = false;
+    touchStartedOutside = false;
   }, { passive: true });
 
   // Стартовая страница
