@@ -75,6 +75,14 @@ nav{display:flex;align-items:center;justify-content:space-between;height:80px;ga
 .btn-ghost:hover{border-color:var(--acc);color:var(--acc)}
 .btn-sm{padding:9px 16px;font-size:13.5px}
 
+/* ---------- ОВЕРЛЕЙ ДЛЯ МЕНЮ ---------- */
+.nav-overlay{
+  display:none;
+  position:fixed; inset:0; z-index:49;
+  background:rgba(0,0,0,.45);
+}
+.nav-overlay.active{ display:block; }
+
 /* ---------- HERO ---------- */
 .hero{position:relative;padding:90px 0 70px;overflow:hidden}
 .hero::before{
@@ -314,13 +322,14 @@ footer a:hover{color:var(--acc)}
 }
 @media(max-width:960px){
   .hero .wrap{grid-template-columns:1fr}
-  .board{display:none}          /* ← ДОБАВЛЕНО: скрыть доску на мобильных */
+  .board{display:none}              /* ← скрыть доску на мобильных */
   .grid-3{grid-template-columns:1fr 1fr}
   .grid-2{grid-template-columns:1fr}
   .nav-cta{display:none}
   .nav-links{
     display:none;position:absolute;top:80px;left:0;right:0;flex-direction:column;gap:0;
     background:rgba(5,7,10,.97);border-bottom:1px solid var(--line);padding:8px 22px 14px;
+    z-index:51;
   }
   .nav-links.open{display:flex}
   .nav-links a{padding:12px 0;border-bottom:1px solid var(--line);text-align:left;}
@@ -355,8 +364,8 @@ footer a:hover{color:var(--acc)}
     border-radius: 12px; padding: 6px 14px;
     box-shadow: 0 12px 30px rgba(0,0,0,.6);
     display: none; z-index: 60;
-    max-height: calc(100vh - 60px);   /* ← ДОБАВЛЕНО */
-    overflow-y: auto;                  /* ← ДОБАВЛЕНО */
+    max-height: calc(100vh - 60px);
+    overflow-y: auto;
   }
   .nav-links.open { display: flex; }
   .nav-links a { padding: 10px 0; border-bottom: 1px solid var(--line); text-align: left; font-size: 13px; }
@@ -364,6 +373,18 @@ footer a:hover{color:var(--acc)}
   .nav-cta { display: none; }
   .burger { display: block; width: 36px; height: 32px; font-size: 16px; }
   main { padding-top: 48px; }
+
+  /* Слайдеры «Было/Стало» в ландшафте: уже и с отступами по ~1 см */
+  #compare-zamer,
+  #compare-chertezh {
+    max-width: calc(100% - 2cm) !important;
+    margin-left: 1cm !important;
+    margin-right: 1cm !important;
+  }
+  #compare-zamer .ba,
+  #compare-chertezh .ba {
+    aspect-ratio: 16 / 9;
+  }
 }
 </style>
 </head>
@@ -408,6 +429,7 @@ footer a:hover{color:var(--acc)}
       <button class="burger" id="burger" aria-label="Меню">☰</button>
     </nav>
   </div>
+  <div class="nav-overlay" id="navOverlay"></div>
 </header>
 
 <main>
@@ -1099,16 +1121,26 @@ footer a:hover{color:var(--acc)}
   // --- ГОД ---
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  // --- НАВИГАЦИЯ ---
+  // --- НАВИГАЦИЯ С ОВЕРЛЕЕМ ---
   var pages = document.querySelectorAll('.page');
   var navLinksBox = document.getElementById('navLinks');
+  var navOverlay = document.getElementById('navOverlay');
+
+  function openMenu(){
+    navLinksBox.classList.add('open');
+    navOverlay.classList.add('active');
+  }
+  function closeMenu(){
+    navLinksBox.classList.remove('open');
+    navOverlay.classList.remove('active');
+  }
 
   function showPage(name, push){
     pages.forEach(function(p){ p.classList.toggle('active', p.id === 'page-' + name); });
     document.querySelectorAll('.nav-links a').forEach(function(a){
       a.classList.toggle('active', a.dataset.page === name);
     });
-    navLinksBox.classList.remove('open');
+    closeMenu();
     window.scrollTo({top:0, behavior:'smooth'});
     document.querySelectorAll('.page.active .reveal').forEach(function(el){ el.classList.add('in'); });
     if(push && history.pushState){ history.pushState({page:name}, '', '#' + name); }
@@ -1123,14 +1155,14 @@ footer a:hover{color:var(--acc)}
 
   document.getElementById('burger').addEventListener('click', function(e){
     e.stopPropagation();
-    navLinksBox.classList.toggle('open');
+    if(navLinksBox.classList.contains('open')) closeMenu();
+    else openMenu();
   });
 
-  // Закрытие меню при клике вне его
-  document.addEventListener('click', function(e){
-    if(navLinksBox.classList.contains('open') && !e.target.closest('nav')){
-      navLinksBox.classList.remove('open');
-    }
+  navOverlay.addEventListener('click', closeMenu);
+
+  navLinksBox.addEventListener('click', function(e){
+    if(e.target.closest('a')) closeMenu();
   });
 
   var start = (location.hash || '#home').replace('#','');
