@@ -21,8 +21,6 @@ body{
 main{flex:1}
 a{color:inherit;text-decoration:none}
 .wrap{max-width:var(--max);margin:0 auto;padding:0 22px}
-
-/* ---------- ЧЕРТЕЖНЫЙ ФОН ---------- */
 .bg-drafting {
   position: fixed; inset: 0; z-index: -1; background-color: var(--bg);
   background-image: 
@@ -36,156 +34,80 @@ a{color:inherit;text-decoration:none}
 .bg-drafting svg { width: 100%; height: 100%; display: block; }
 .bg-drafting::before { content: ""; position: absolute; inset: 16px; border: 1px solid var(--line); opacity: 0.6; border-radius: 4px; }
 .bg-drafting::after { content: ""; position: absolute; inset: 24px; border: 1px solid var(--line); opacity: 0.3; border-radius: 2px; }
-
-/* ---------- ЛОГОТИП ---------- */
-.logo-img {
-  height: 76px;
-  width: auto;
-  object-fit: contain;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 6px 14px;
-  border-radius: 8px;
-  display: block;
-}
-
-/* ---------- NAV ---------- */
-header{
-  position:sticky;top:0;z-index:50;
-  background:rgba(5,7,10,.82);backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--line);
-}
+.logo-img { height: 76px; width: auto; object-fit: contain; background: rgba(255, 255, 255, 0.95); padding: 6px 14px; border-radius: 8px; display: block; }
+header{ position:sticky;top:0;z-index:50; background:rgba(5,7,10,.82);backdrop-filter:blur(12px); border-bottom:1px solid var(--line); }
 nav{display:flex;align-items:center;justify-content:space-between;height:80px;gap:16px}
 .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;cursor:pointer;flex-shrink:0;}
 .nav-links{display:flex;gap:16px;font-size:13.5px;color:var(--muted);align-items:center;flex-wrap:nowrap;}
 .nav-links a{transition:.2s;position:relative;padding:4px 0;cursor:pointer;text-align:center;line-height:1.3;}
 .nav-links a:hover{color:var(--txt)}
 .nav-links a.active{color:var(--txt)}
-.nav-links a.active::after{
-  content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;
-  background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:2px;
-}
+.nav-links a.active::after{ content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px; background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:2px; }
 .burger{display:none;background:none;border:1px solid var(--line);color:var(--txt);width:42px;height:38px;border-radius:10px;font-size:18px;cursor:pointer}
-.btn{
-  display:inline-block;padding:11px 20px;border-radius:11px;font-weight:600;
-  font-size:14.5px;border:1px solid transparent;cursor:pointer;transition:.22s;font-family:inherit;flex-shrink:0;
-}
+.btn{ display:inline-block;padding:11px 20px;border-radius:11px;font-weight:600; font-size:14.5px;border:1px solid transparent;cursor:pointer;transition:.22s;font-family:inherit;flex-shrink:0; }
 .btn-main{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#04121f}
 .btn-main:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(62,166,255,.28)}
 .btn-ghost{border-color:var(--line);color:var(--txt);background:transparent}
 .btn-ghost:hover{border-color:var(--acc);color:var(--acc)}
 .btn-sm{padding:9px 16px;font-size:13.5px}
-
-/* ---------- HERO ---------- */
 .hero{position:relative;padding:90px 0 70px;overflow:hidden}
-.hero::before{
-  content:"";position:absolute;inset:0;z-index:0;
-  background:
-    radial-gradient(600px 300px at 80% -10%,rgba(62,166,255,.18),transparent 70%),
-    radial-gradient(500px 260px at 10% 20%,rgba(34,211,166,.12),transparent 70%);
-}
+.hero::before{ content:"";position:absolute;inset:0;z-index:0; background: radial-gradient(600px 300px at 80% -10%,rgba(62,166,255,.18),transparent 70%), radial-gradient(500px 260px at 10% 20%,rgba(34,211,166,.12),transparent 70%); }
 .hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:1.1fr .9fr;gap:50px;align-items:center}
-.tag{
-  display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:99px;
-  border:1px solid var(--line);background:var(--bg2);color:var(--muted);
-  font-size:13px;margin-bottom:22px;
-}
+.tag{ display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:99px; border:1px solid var(--line);background:var(--bg2);color:var(--muted); font-size:13px;margin-bottom:22px; }
 .tag b{color:var(--acc2);font-weight:600}
 h1{font-size:clamp(30px,4.4vw,50px);line-height:1.12;letter-spacing:-.5px;margin-bottom:20px}
 h1 span{background:linear-gradient(120deg,var(--acc),var(--acc2));-webkit-background-clip:text;background-clip:text;color:transparent}
 .lead{color:var(--muted);font-size:17px;max-width:520px;margin-bottom:30px}
 .hero-actions{display:flex;gap:14px;flex-wrap:wrap}
-
 .page-hero{padding:70px 0 40px;position:relative;overflow:hidden}
-.page-hero::before{
-  content:"";position:absolute;inset:0;z-index:0;
-  background:radial-gradient(700px 320px at 70% -20%,rgba(62,166,255,.16),transparent 70%);
-}
+.page-hero::before{ content:"";position:absolute;inset:0;z-index:0; background:radial-gradient(700px 320px at 70% -20%,rgba(62,166,255,.16),transparent 70%); }
 .page-hero .wrap{position:relative;z-index:1}
 .page-hero h1{font-size:clamp(28px,3.6vw,44px);margin-bottom:14px}
 .page-hero p{color:var(--muted);max-width:660px;font-size:16.5px}
-
-.board{
-  position:relative;aspect-ratio:1/1;max-width:440px;margin-left:auto;
-  border-radius:22px;border:1px solid var(--line);background:var(--card);
-  overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.45);
-}
+.board{ position:relative;aspect-ratio:1/1;max-width:440px;margin-left:auto; border-radius:22px;border:1px solid var(--line);background:var(--card); overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.45); }
 .board svg{width:100%;height:100%;display:block}
 .board .grid{stroke:#1a2534;stroke-width:.6}
 .board .line{stroke:var(--acc);stroke-width:1.6;fill:none;stroke-dasharray:800;stroke-dashoffset:800;animation:draw 3.4s ease forwards}
 .board .line2{stroke:var(--acc2)}
 .board .node{fill:var(--acc2)}
 @keyframes draw{to{stroke-dashoffset:0}}
-.board .badge{
-  position:absolute;left:16px;bottom:16px;padding:7px 13px;border-radius:9px;
-  background:rgba(5,7,10,.78);border:1px solid var(--line);font-size:12px;color:var(--muted);
-  font-family:'Consolas',monospace;
-}
+.board .badge{ position:absolute;left:16px;bottom:16px;padding:7px 13px;border-radius:9px; background:rgba(5,7,10,.78);border:1px solid var(--line);font-size:12px;color:var(--muted); font-family:'Consolas',monospace; }
 .board .badge b{color:var(--acc2)}
-
-/* ---------- SECTIONS ---------- */
 section{padding:76px 0}
 .sec-head{max-width:660px;margin-bottom:44px}
 .sec-head .kicker{color:var(--acc2);font-size:13px;font-weight:600;letter-spacing:1.6px;text-transform:uppercase;margin-bottom:10px}
 .sec-head h2{font-size:clamp(24px,3vw,36px);letter-spacing:-.4px;margin-bottom:12px}
 .sec-head p{color:var(--muted)}
-
 .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
 .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
 .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
-.card{
-  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
-  padding:28px;transition:.25s;position:relative;overflow:hidden;display:block;
-}
+.card{ background:var(--card);border:1px solid var(--line);border-radius:var(--radius); padding:28px;transition:.25s;position:relative;overflow:hidden;display:block; }
 a.card:hover,.card.hover:hover{transform:translateY(-5px);border-color:#33506d;box-shadow:0 22px 50px rgba(0,0,0,.5)}
-.card .ico{
-  width:48px;height:48px;border-radius:13px;display:grid;place-items:center;font-size:22px;
-  background:linear-gradient(135deg,rgba(62,166,255,.18),rgba(34,211,166,.18));
-  border:1px solid var(--line);margin-bottom:18px;
-}
+.card .ico{ width:48px;height:48px;border-radius:13px;display:grid;place-items:center;font-size:22px; background:linear-gradient(135deg,rgba(62,166,255,.18),rgba(34,211,166,.18)); border:1px solid var(--line);margin-bottom:18px; }
 .card h3{font-size:18px;margin-bottom:10px}
 .card p{color:var(--muted);font-size:14.5px}
 .card ul{list-style:none;margin-top:14px;display:grid;gap:7px}
 .card li{font-size:13.5px;color:var(--muted);padding-left:20px;position:relative}
 .card li::before{content:"▸";position:absolute;left:0;color:var(--acc2)}
 .card .more{display:inline-block;margin-top:16px;font-size:13.5px;color:var(--acc);font-weight:600}
-
 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;counter-reset:s}
 .step{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px;position:relative}
 .step::before{counter-increment:s;content:"0" counter(s);font-family:'Consolas',monospace;font-size:13px;color:var(--acc);display:block;margin-bottom:12px}
 .step h4{font-size:15.5px;margin-bottom:8px}
 .step p{font-size:13.5px;color:var(--muted)}
-
-/* ---------- БЫЛО / СТАЛО ---------- */
 .ba-item .cap{margin-top:12px;font-size:14px;color:var(--muted)}
 .ba-item .cap b{display:block;color:var(--txt);font-size:15.5px;margin-bottom:2px}
-.ba{
-  --pos:50%;position:relative;margin:0;overflow:hidden;
-  border-radius:var(--radius);border:1px solid var(--line);background:var(--card);
-  user-select:none;touch-action:pan-y;aspect-ratio: 4/3;
-}
+.ba{ --pos:50%;position:relative;margin:0;overflow:hidden; border-radius:var(--radius);border:1px solid var(--line);background:var(--card); user-select:none;touch-action:pan-y;aspect-ratio: 4/3; }
 .ba.ba-custom-zamer { aspect-ratio: 2334 / 2557; }
 .ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
 .ba-before{position:absolute;inset:0;clip-path:inset(0 calc(100% - var(--pos)) 0 0)}
-.ba-handle{
-  position:absolute;top:0;bottom:0;left:var(--pos);width:2px;margin-left:-1px;
-  background:linear-gradient(var(--acc),var(--acc2));pointer-events:none;
-}
-.ba-handle i{
-  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-  width:38px;height:38px;border-radius:50%;display:grid;place-items:center;
-  background:var(--bg);border:2px solid var(--acc);color:var(--acc);font-style:normal;font-size:16px;
-  box-shadow:0 6px 20px rgba(0,0,0,.5);
-}
-.ba-lbl{
-  position:absolute;top:12px;padding:4px 11px;border-radius:8px;font-size:12px;font-weight:600;
-  background:rgba(5,7,10,.75);border:1px solid var(--line);pointer-events:none;
-}
+.ba-handle{ position:absolute;top:0;bottom:0;left:var(--pos);width:2px;margin-left:-1px; background:linear-gradient(var(--acc),var(--acc2));pointer-events:none; }
+.ba-handle i{ position:absolute;top:50%;left:50%;transform:translate(-50%,-50%); width:38px;height:38px;border-radius:50%;display:grid;place-items:center; background:var(--bg);border:2px solid var(--acc);color:var(--acc);font-style:normal;font-size:16px; box-shadow:0 6px 20px rgba(0,0,0,.5); }
+.ba-lbl{ position:absolute;top:12px;padding:4px 11px;border-radius:8px;font-size:12px;font-weight:600; background:rgba(5,7,10,.75);border:1px solid var(--line);pointer-events:none; }
 .ba-lbl.l{left:12px;color:var(--muted)}
 .ba-lbl.r{right:12px;color:var(--acc2)}
 .ba input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize;-webkit-appearance:none;appearance:none;}
 .ba:focus-within{border-color:var(--acc)}
-
-/* ---------- ОБОРУДОВАНИЕ ---------- */
 .equip-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 30px; }
 .equip-card { background: var(--bg2); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; text-align: center; display: flex; flex-direction: column; }
 .equip-img-wrap { position: relative; background: #fff; border-radius: 8px; margin-bottom: 15px; padding: 10px; display: flex; justify-content: center; align-items: center; height: 200px; }
@@ -193,78 +115,30 @@ a.card:hover,.card.hover:hover{transform:translateY(-5px);border-color:#33506d;b
 .equip-lbl { position: absolute; bottom: -10px; right: 10px; background: var(--acc); color: #000; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; }
 .equip-card h4 { font-size: 18px; color: var(--acc2); margin-bottom: 10px; }
 .equip-card p { font-size: 13.5px; color: var(--muted); flex: 1; text-align: left; }
-
-/* ---------- ПОРТФОЛИО (ГЛАВНАЯ) ---------- */
 .portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
-.portfolio-card { 
-  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); 
-  overflow: hidden; display: flex; flex-direction: column;
-}
-.portfolio-img-wrap { 
-  position: relative; width: 100%; aspect-ratio: 4/3; overflow: hidden; cursor: zoom-in;
-}
+.portfolio-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; }
+.portfolio-img-wrap { position: relative; width: 100%; aspect-ratio: 4/3; overflow: hidden; cursor: zoom-in; }
 .portfolio-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
 .portfolio-img-wrap:hover img { transform: scale(1.05); }
 .portfolio-info { padding: 20px; flex: 1; display: flex; flex-direction: column; }
 .portfolio-info h4 { font-size: 16px; margin-bottom: 8px; }
 .portfolio-info p { font-size: 13.5px; color: var(--muted); flex: 1; margin-bottom: 15px; }
 .portfolio-actions { display: flex; gap: 10px; }
-
-/* ---------- СЕТКИ ПРИМЕРОВ РАБОТ ---------- */
-.work-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
-  margin-top: 20px;
-}
-.work-grid-facades {
-  grid-template-columns: repeat(2, 1fr);
-}
-.work-item {
-  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); 
-  overflow: hidden; cursor: zoom-in; transition: .25s;
-}
+.work-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; }
+.work-grid-facades { grid-template-columns: repeat(2, 1fr); }
+.work-item { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; cursor: zoom-in; transition: .25s; }
 .work-item:hover { border-color: var(--acc); transform: translateY(-3px); }
 .work-item img { width: 100%; height: 250px; object-fit: cover; display: block; }
-
-/* Сетка для двух карточек (Электрика и Ведомость) */
-.grid-resp-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 22px;
-  margin-top: 22px;
-}
-
-/* ---------- ЛАЙТБОКС (ПОЛНОЭКРАННЫЙ ПРОСМОТР) ---------- */
-.lightbox {
-  display: none; position: fixed; inset: 0; z-index: 1000;
-  background: rgba(0,0,0,0.92); padding: 20px;
-  align-items: center; justify-content: center;
-  user-select: none;
-}
+.grid-resp-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 22px; }
+.lightbox { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.92); padding: 20px; align-items: center; justify-content: center; user-select: none; }
 .lightbox.active { display: flex; }
-.lightbox img {
-  max-width: 90%; max-height: 90%; object-fit: contain;
-  border-radius: 8px; box-shadow: 0 0 40px rgba(0,0,0,0.8);
-}
-.lb-nav {
-  position: absolute; top: 50%; transform: translateY(-50%);
-  background: rgba(255,255,255,0.1); border: none; color: #fff;
-  width: 60px; height: 60px; border-radius: 50%; cursor: pointer;
-  font-size: 40px; display: flex; align-items: center; justify-content: center;
-  transition: 0.2s; z-index: 1002;
-}
+.lightbox img { max-width: 90%; max-height: 90%; object-fit: contain; border-radius: 8px; box-shadow: 0 0 40px rgba(0,0,0,0.8); }
+.lb-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: none; color: #fff; width: 60px; height: 60px; border-radius: 50%; cursor: pointer; font-size: 40px; display: flex; align-items: center; justify-content: center; transition: 0.2s; z-index: 1002; }
 .lb-nav:hover { background: rgba(255,255,255,0.25); }
 .lb-prev { left: 30px; }
 .lb-next { right: 30px; }
-.lb-close {
-  position: absolute; top: 20px; right: 30px; font-size: 40px; color: #fff; cursor: pointer;
-  font-family: sans-serif; line-height: 1; z-index: 1002;
-  background: none; border: none; transition: 0.2s;
-}
+.lb-close { position: absolute; top: 20px; right: 30px; font-size: 40px; color: #fff; cursor: pointer; font-family: sans-serif; line-height: 1; z-index: 1002; background: none; border: none; transition: 0.2s; }
 .lb-close:hover { color: var(--acc); }
-
-/* ---------- КОНТАКТЫ ---------- */
 .contact-grid{display:grid;grid-template-columns:1fr; gap:24px; max-width:600px; margin:0 auto;}
 .info-list{display:grid;gap:16px}
 .info-item{display:flex;gap:14px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:13px;padding:18px; transition: .2s;}
@@ -274,76 +148,28 @@ a.info-item:hover { border-color: var(--acc); background: var(--bg2); }
 .info-item span{font-size:13.5px;color:var(--muted)}
 .info-item a{color:var(--acc);transition:.2s}
 .info-item a:hover{color:var(--acc2)}
-
-.tg-card {
-  display: flex; gap: 20px; align-items: center; 
-  background: var(--bg2); border: 1px solid var(--line); 
-  border-radius: var(--radius); padding: 20px;
-}
+.tg-card { display: flex; gap: 20px; align-items: center; background: var(--bg2); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; }
 .tg-card:hover { border-color: var(--acc); }
 .tg-qr { width: 120px; height: 120px; border-radius: 12px; object-fit: cover; border: 1px solid var(--line); }
 .tg-info b { font-size: 18px; color: var(--txt); display: block; margin-bottom: 4px; }
 .tg-info span { color: var(--acc2); font-weight: 600; font-size: 15px; }
 .tg-info p { color: var(--muted); font-size: 13px; margin-top: 8px; line-height: 1.4;}
-
-.cta-band{
-  background:linear-gradient(135deg,rgba(62,166,255,.14),rgba(34,211,166,.14));
-  border:1px solid var(--line);border-radius:var(--radius);padding:44px;
-  display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;
-}
+.cta-band{ background:linear-gradient(135deg,rgba(62,166,255,.14),rgba(34,211,166,.14)); border:1px solid var(--line);border-radius:var(--radius);padding:44px; display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap; }
 .cta-band h2{font-size:clamp(22px,2.6vw,30px);letter-spacing:-.4px;margin-bottom:6px}
 .cta-band p{color:var(--muted)}
-
 footer{border-top:1px solid var(--line);padding:30px 0;color:var(--muted);font-size:13.5px;margin-top:40px}
 footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
 footer a{cursor:pointer}
 footer a:hover{color:var(--acc)}
-
 .reveal{opacity:0;transform:translateY(22px);transition:.7s cubic-bezier(.2,.7,.2,1)}
 .reveal.in{opacity:1;transform:none}
-
 .page{display:none}
 .page.active{display:block;animation:fade .4s ease}
 @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-
-@media(max-width:1200px){
-  .nav-links{font-size:12.5px; gap:12px;}
-  nav{height:auto; min-height:80px; padding:10px 0;}
-}
-@media(max-width:1020px){
-  .grid-4{grid-template-columns:1fr 1fr}
-  .equip-grid, .portfolio-grid { grid-template-columns: 1fr 1fr; }
-  .work-grid { grid-template-columns: repeat(2, 1fr); }
-  .work-grid-facades { grid-template-columns: repeat(2, 1fr); }
-  .nav-links{display:none;}
-  .burger{display:block;}
-}
-@media(max-width:960px){
-  .hero .wrap{grid-template-columns:1fr}
-  .board{margin:0 auto}
-  .grid-3,.steps{grid-template-columns:1fr 1fr}
-  .grid-2{grid-template-columns:1fr}
-  .nav-cta{display:none}
-  .nav-links{
-    display:none;position:absolute;top:80px;left:0;right:0;flex-direction:column;gap:0;
-    background:rgba(5,7,10,.97);border-bottom:1px solid var(--line);padding:8px 22px 14px;
-  }
-  .nav-links.open{display:flex}
-  .nav-links a{padding:12px 0;border-bottom:1px solid var(--line);text-align:left;}
-  .nav-links a.active::after{display:none}
-}
-@media(max-width:600px){
-  .grid-3,.grid-4,.steps,.equip-grid, .portfolio-grid, .work-grid, .work-grid-facades {grid-template-columns:1fr}
-  .grid-resp-2 { grid-template-columns: 1fr; }
-  section{padding:56px 0}
-  .hero{padding:60px 0 40px}
-  .cta-band{padding:28px}
-  .tg-card { flex-direction: column; text-align: center; }
-  .logo-img { height: 50px; }
-  .lb-nav { width: 40px; height: 40px; font-size: 24px; }
-  .lb-prev { left: 10px; }
-  .lb-next { right: 10px; }
-}
+@media(max-width:1200px){ .nav-links{font-size:12.5px; gap:12px;} nav{height:auto; min-height:80px; padding:10px 0;} }
+@media(max-width:1020px){ .grid-4{grid-template-columns:1fr 1fr} .equip-grid, .portfolio-grid { grid-template-columns: 1fr 1fr; } .work-grid { grid-template-columns: repeat(2, 1fr); } .work-grid-facades { grid-template-columns: repeat(2, 1fr); } .nav-links{display:none;} .burger{display:block;} }
+@media(max-width:960px){ .hero .wrap{grid-template-columns:1fr} .board{margin:0 auto} .grid-3,.steps{grid-template-columns:1fr 1fr} .grid-2{grid-template-columns:1fr} .nav-cta{display:none} .nav-links{ display:none;position:absolute;top:80px;left:0;right:0;flex-direction:column;gap:0; background:rgba(5,7,10,.97);border-bottom:1px solid var(--line);padding:8px 22px 14px; } .nav-links.open{display:flex} .nav-links a{padding:12px 0;border-bottom:1px solid var(--line);text-align:left;} .nav-links a.active::after{display:none} }
+@media(max-width:600px){ .grid-3,.grid-4,.steps,.equip-grid, .portfolio-grid, .work-grid, .work-grid-facades {grid-template-columns:1fr} .grid-resp-2 { grid-template-columns: 1fr; } section{padding:56px 0} .hero{padding:60px 0 40px} .cta-band{padding:28px} .tg-card { flex-direction: column; text-align: center; } .logo-img { height: 50px; } .lb-nav { width: 40px; height: 40px; font-size: 24px; } .lb-prev { left: 10px; } .lb-next { right: 10px; } }
 </style>
 </head>
 <body>
@@ -371,7 +197,7 @@ footer a:hover{color:var(--acc)}
   <div class="wrap">
     <nav>
       <a class="logo" data-page="home">
-        <img src="img/logo.png" alt="Логотип" class="logo-img" onerror="this.style.display='none'">
+        <img src="img/logo.png" alt="Логотип" class="logo-img" loading="lazy" onerror="this.style.display='none'">
         <span>М</span>
       </a>
       <div class="nav-links" id="navLinks">
@@ -444,18 +270,22 @@ footer a:hover{color:var(--acc)}
           <p>Рабочая документация, обмерные работы и оформление по ГОСТ/СПДС или вашему шаблону.</p>
           <span class="more">Подробнее →</span>
         </a>
-        
         <a class="card reveal" data-page="services">
           <div class="ico">📦</div>
           <h3>Построение помещений в 3D</h3>
           <p>Создание объемных моделей по обмерам для визуализации и проектирования.</p>
           <span class="more">Подробнее →</span>
         </a>
-        
         <a class="card reveal" data-page="lisp">
           <div class="ico">⚙️</div>
           <h3>Адаптация LISP</h3>
           <p>Скрипты для AutoCAD, которые убирают рутину и ускоряют выпуск чертежей.</p>
+          <span class="more">Подробнее →</span>
+        </a>
+        <a class="card reveal" data-page="shop">
+          <div class="ico">📸</div>
+          <h3>Съёмка криволинейных поверхностей</h3>
+          <p>Точные обмеры сложных форм для изготовления или реставрации.</p>
           <span class="more">Подробнее →</span>
         </a>
       </div>
@@ -471,8 +301,8 @@ footer a:hover{color:var(--acc)}
       </div>
       <div class="portfolio-grid">
         <div class="portfolio-card reveal">
-          <div class="portfolio-img-wrap" onclick="openLightbox('img/work1.jpg')">
-            <img src="img/work1.jpg" alt="Пример чертежа" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:20px; text-align:center;\'>Фото work1.jpg</div>'">
+          <div class="portfolio-img-wrap" onclick="openLightbox('img/work1-full.jpg')">
+            <img src="img/work1-thumb.jpg" alt="Пример чертежа" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:20px; text-align:center;\'>Фото work1-thumb.jpg</div>'">
           </div>
           <div class="portfolio-info">
             <h4>Чертежи квартиры со съемкой электрики</h4>
@@ -485,8 +315,8 @@ footer a:hover{color:var(--acc)}
         </div>
 
         <div class="portfolio-card reveal">
-          <div class="portfolio-img-wrap" onclick="openLightbox('img/work2.jpg')">
-            <img src="img/work2.jpg" alt="Пример 3D-модели" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:20px; text-align:center;\'>Фото work2.jpg</div>'">
+          <div class="portfolio-img-wrap" onclick="openLightbox('img/work2-full.jpg')">
+            <img src="img/work2-thumb.jpg" alt="Пример 3D-модели" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:20px; text-align:center;\'>Фото work2-thumb.jpg</div>'">
           </div>
           <div class="portfolio-info">
             <h4>План коммерческого помещения со съемкой всех коммуникаций под потолком</h4>
@@ -499,8 +329,8 @@ footer a:hover{color:var(--acc)}
         </div>
 
         <div class="portfolio-card reveal">
-          <div class="portfolio-img-wrap" onclick="openLightbox('img/work3.jpg')">
-            <img src="img/work3.jpg" alt="Пример рабочего чертежа" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:20px; text-align:center;\'>Фото work3.jpg</div>'">
+          <div class="portfolio-img-wrap" onclick="openLightbox('img/work3-full.jpg')">
+            <img src="img/work3-thumb.jpg" alt="Пример рабочего чертежа" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:20px; text-align:center;\'>Фото work3-thumb.jpg</div>'">
           </div>
           <div class="portfolio-info">
             <h4>3D съёмка детского парка</h4>
@@ -538,7 +368,6 @@ footer a:hover{color:var(--acc)}
     </div>
   </section>
 
-  <!-- БЛОК 1: ПЛАНЫ -->
   <section id="block-plans" style="padding-top: 40px;">
     <div class="wrap">
       <div class="sec-head reveal">
@@ -555,8 +384,7 @@ footer a:hover{color:var(--acc)}
           </ul>
         </div>
       </div>
-      
-      <!-- ДВА БЛОКА: 2 колонки на ПК, 1 на мобильных -->
+
       <div class="grid-resp-2">
         <div class="card reveal">
           <p style="color:var(--txt);">⚡ <strong>Электрика:</strong> При необходимости можно нанести на план все выпуски для электроустановочных изделий (розетки, выключатели, кабельные выпуски и прочее).</p>
@@ -566,7 +394,6 @@ footer a:hover{color:var(--acc)}
         </div>
       </div>
 
-      <!-- СЛАЙДЕР И ПРИМЕРЫ РАБОТ (ПЛАНЫ) -->
       <div style="margin-top: 50px;">
         <div class="sec-head reveal" style="margin-bottom: 20px;">
           <div class="kicker">Пример работы</div>
@@ -574,31 +401,29 @@ footer a:hover{color:var(--acc)}
           <p>Реальный объект и точный план в DWG. Потяните ползунок, чтобы сравнить.</p>
         </div>
         <div class="reveal" id="compare-zamer" style="max-width: 600px; margin-bottom: 40px;"></div>
-        
+
         <div class="sec-head reveal" style="margin-bottom: 20px;">
           <h2>Чертежи примеров</h2>
         </div>
-        
-        <!-- СТАТИЧНАЯ СЕТКА ПЛАНОВ (4 ОКНА) -->
+
         <div class="work-grid reveal">
           <div class="work-item" onclick="openGallery(0)">
-            <img src="img/plan-example1.jpg" alt="Пример плана 1" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото plan-example1.jpg</div>'">
+            <img src="img/plan-example1-thumb.jpg" alt="Пример плана 1" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото plan-example1-thumb.jpg</div>'">
           </div>
           <div class="work-item" onclick="openGallery(1)">
-            <img src="img/plan-example2.jpg" alt="Пример плана 2" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото plan-example2.jpg</div>'">
+            <img src="img/plan-example2-thumb.jpg" alt="Пример плана 2" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото plan-example2-thumb.jpg</div>'">
           </div>
           <div class="work-item" onclick="openGallery(2)">
-            <img src="img/plan-example3.jpg" alt="Пример плана 3" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото plan-example3.jpg</div>'">
+            <img src="img/plan-example3-thumb.jpg" alt="Пример плана 3" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото plan-example3-thumb.jpg</div>'">
           </div>
           <div class="work-item" onclick="openGallery(3)">
-            <img src="img/plan-example4.jpg" alt="Пример плана 4" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото plan-example4.jpg</div>'">
+            <img src="img/plan-example4-thumb.jpg" alt="Пример плана 4" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото plan-example4-thumb.jpg</div>'">
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- БЛОК 2: ОБОРУДОВАНИЕ -->
   <section style="padding-top: 40px; border-top: 1px dashed var(--line);">
     <div class="wrap">
       <div class="sec-head reveal">
@@ -606,11 +431,11 @@ footer a:hover{color:var(--acc)}
         <h2>Используем точные лазерные дальномеры Leica DISTO</h2>
         <p>Для обмеров применяем профессиональное оборудование, которое гарантирует точность от 1 мм даже на сложных объектах.</p>
       </div>
-      
+
       <div class="equip-grid">
         <div class="equip-card reveal">
           <div class="equip-img-wrap">
-            <img src="img/leica-s910.png" alt="Leica DISTO S910" class="equip-img" onerror="this.style.display='none'">
+            <img src="img/leica-s910.png" alt="Leica DISTO S910" class="equip-img" loading="lazy" onerror="this.style.display='none'">
             <span class="equip-lbl">Флагман</span>
           </div>
           <h4>Leica DISTO S910</h4>
@@ -618,7 +443,7 @@ footer a:hover{color:var(--acc)}
         </div>
         <div class="equip-card reveal">
           <div class="equip-img-wrap">
-            <img src="img/leica-d510.jpg" alt="Leica DISTO D510" class="equip-img" onerror="this.style.display='none'">
+            <img src="img/leica-d510.jpg" alt="Leica DISTO D510" class="equip-img" loading="lazy" onerror="this.style.display='none'">
             <span class="equip-lbl">Оборудование</span>
           </div>
           <h4>Leica DISTO D510</h4>
@@ -626,7 +451,7 @@ footer a:hover{color:var(--acc)}
         </div>
         <div class="equip-card reveal">
           <div class="equip-img-wrap">
-            <img src="img/leica-d110.jpg" alt="Leica DISTO D110" class="equip-img" onerror="this.style.display='none'">
+            <img src="img/leica-d110.jpg" alt="Leica DISTO D110" class="equip-img" loading="lazy" onerror="this.style.display='none'">
             <span class="equip-lbl">На замере</span>
           </div>
           <h4>Leica DISTO D110</h4>
@@ -636,7 +461,6 @@ footer a:hover{color:var(--acc)}
     </div>
   </section>
 
-  <!-- БЛОК 3: ФАСАДЫ -->
   <section id="block-facades" style="padding-top: 40px; border-top: 1px dashed var(--line);">
     <div class="wrap">
       <div class="sec-head reveal">
@@ -644,7 +468,6 @@ footer a:hover{color:var(--acc)}
         <p>Съемка фасада для дальнейшего проектирования, расчета декоративных и отделочных материалов, визуализации, размещения рекламных экранов и прочего оборудования.</p>
       </div>
 
-      <!-- СЛАЙДЕР ФАСАДЫ -->
       <div style="margin-top: 30px; margin-bottom: 40px;">
         <div class="sec-head reveal" style="margin-bottom: 20px;">
           <div class="kicker">Пример работы</div>
@@ -654,24 +477,22 @@ footer a:hover{color:var(--acc)}
         <div class="reveal" id="compare-chertezh" style="max-width: 600px;"></div>
       </div>
 
-      <!-- СТАТИЧНАЯ СЕТКА ФАСАДОВ -->
       <div style="margin-top: 30px;">
         <div class="work-grid work-grid-facades reveal">
           <div class="work-item" onclick="openFacadeGallery(0)">
-            <img src="img/facade-example1.jpg" alt="Пример фасада 1" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото facade-example1.jpg</div>'">
+            <img src="img/facade-example1-thumb.jpg" alt="Пример фасада 1" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото facade-example1-thumb.jpg</div>'">
           </div>
           <div class="work-item" onclick="openFacadeGallery(1)">
-            <img src="img/facade-example2.jpg" alt="Пример фасада 2" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото facade-example2.jpg</div>'">
+            <img src="img/facade-example2-thumb.jpg" alt="Пример фасада 2" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото facade-example2-thumb.jpg</div>'">
           </div>
           <div class="work-item" onclick="openFacadeGallery(2)">
-            <img src="img/facade-example3.jpg" alt="Пример фасада 3" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото facade-example3.jpg</div>'">
+            <img src="img/facade-example3-thumb.jpg" alt="Пример фасада 3" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото facade-example3-thumb.jpg</div>'">
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- БЛОК 4: ПОСТРОЕНИЕ ПОМЕЩЕНИЙ В 3D -->
   <section id="block-3d" style="padding-top: 40px; border-top: 1px dashed var(--line);">
     <div class="wrap">
       <div class="sec-head reveal">
@@ -679,17 +500,16 @@ footer a:hover{color:var(--acc)}
         <p>Создание объемных моделей помещений по вашим обмерам для визуализации, дизайна и проверки коллизий.</p>
       </div>
 
-      <!-- СТАТИЧНАЯ СЕТКА 3D (ОТДЕЛЬНАЯ) -->
       <div style="margin-top: 30px;">
         <div class="work-grid reveal">
           <div class="work-item" onclick="openRoom3DGallery(0)">
-            <img src="img/room3d-example1.jpg" alt="Пример 3D комнаты 1" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото room3d-example1.jpg</div>'">
+            <img src="img/room3d-example1.jpg" alt="Пример 3D комнаты 1" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото room3d-example1.jpg</div>'">
           </div>
           <div class="work-item" onclick="openRoom3DGallery(1)">
-            <img src="img/room3d-example2.jpg" alt="Пример 3D комнаты 2" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото room3d-example2.jpg</div>'">
+            <img src="img/room3d-example2.jpg" alt="Пример 3D комнаты 2" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото room3d-example2.jpg</div>'">
           </div>
           <div class="work-item" onclick="openRoom3DGallery(2)">
-            <img src="img/room3d-example3.jpg" alt="Пример 3D комнаты 3" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото room3d-example3.jpg</div>'">
+            <img src="img/room3d-example3-full.jpg" alt="Пример 3D комнаты 3" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото room3d-example3-full.jpg</div>'">
           </div>
         </div>
       </div>
@@ -743,7 +563,6 @@ footer a:hover{color:var(--acc)}
   <section>
     <div class="wrap">
       <div class="grid-2">
-        <!-- ПРИМЕР 1: СТУПЕНИ -->
         <div class="card reveal">
           <div class="portfolio-img-wrap" onclick="openLightbox('img/step-example.jpg')" style="margin-bottom:15px; border-radius:8px;">
             <img src="img/step-example.jpg" alt="Съемка ступеней" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото step-example.jpg</div>'">
@@ -752,7 +571,6 @@ footer a:hover{color:var(--acc)}
           <p>Точные обмеры винтовых, поворотных и прямых лестниц. Создание 3D-модели или чертежей для изготовления новых ступеней или облицовки.</p>
         </div>
 
-        <!-- ПРИМЕР 2: СТОЛЕШНИЦЫ -->
         <div class="card reveal">
           <div class="portfolio-img-wrap" onclick="openLightbox('img/countertop-example.jpg')" style="margin-bottom:15px; border-radius:8px;">
             <img src="img/countertop-example.jpg" alt="Съемка столешницы" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото countertop-example.jpg</div>'">
@@ -816,17 +634,16 @@ footer a:hover{color:var(--acc)}
         <h2>Примеры работ</h2>
         <p>Ниже представлены фотографии изготовленных деталей и 3D-моделей.</p>
       </div>
-      
-      <!-- СТАТИЧНАЯ СЕТКА 3D (ТЕХНИЧЕСКАЯ) -->
+
       <div class="work-grid reveal">
         <div class="work-item" onclick="openTech3DGallery(0)">
-          <img src="img/tech3d-example1.jpg" alt="Пример технической 3D модели 1" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото tech3d-example1.jpg</div>'">
+          <img src="img/tech3d-example1.png" alt="Пример технической 3D модели 1" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото tech3d-example1.png</div>'">
         </div>
         <div class="work-item" onclick="openTech3DGallery(1)">
-          <img src="img/tech3d-example2.jpg" alt="Пример технической 3D модели 2" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото tech3d-example2.jpg</div>'">
+          <img src="img/tech3d-example2.png" alt="Пример технической 3D модели 2" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото tech3d-example2.png</div>'">
         </div>
         <div class="work-item" onclick="openTech3DGallery(2)">
-          <img src="img/tech3d-example3.jpg" alt="Пример технической 3D модели 3" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото tech3d-example3.jpg</div>'">
+          <img src="img/tech3d-example3.png" alt="Пример технической 3D модели 3" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото tech3d-example3.png</div>'">
         </div>
       </div>
     </div>
@@ -858,7 +675,6 @@ footer a:hover{color:var(--acc)}
   <section>
     <div class="wrap">
       <div class="contact-grid reveal">
-        
         <a href="https://t.me/AMAX02" target="_blank" class="tg-card" style="text-decoration:none;">
           <img src="img/telegram-qr.png" alt="Telegram QR" class="tg-qr" loading="lazy" onerror="this.style.display='none'">
           <div class="tg-info">
@@ -884,9 +700,8 @@ footer a:hover{color:var(--acc)}
         </div>
 
         <div style="text-align: center; margin-top: 20px;">
-          <img src="img/logo.png" alt="Логотип" style="height: 120px; width: auto; background: rgba(255,255,255,0.95); padding: 15px 30px; border-radius: 12px; display: inline-block;" onerror="this.style.display='none'">
+          <img src="img/logo.png" alt="Логотип" style="height: 120px; width: auto; background: rgba(255,255,255,0.95); padding: 15px 30px; border-radius: 12px; display: inline-block;" loading="lazy" onerror="this.style.display='none'">
         </div>
-
       </div>
     </div>
   </section>
@@ -897,26 +712,26 @@ footer a:hover{color:var(--acc)}
 <footer>
   <div class="wrap">
     <div style="display:flex; align-items:center; gap:15px;">
-      <img src="img/logo.png" alt="Логотип" style="height: 48px; background: rgba(255,255,255,0.95); padding: 6px 12px; border-radius: 6px;" onerror="this.style.display='none'">
+      <img src="img/logo.png" alt="Логотип" style="height: 48px; background: rgba(255,255,255,0.95); padding: 6px 12px; border-radius: 6px;" loading="lazy" onerror="this.style.display='none'">
       <span>© <span id="year"></span> М — Замеры, проектирование, автоматизация AutoCAD</span>
     </div>
     <div>
-      <a data-page="home">Главная</a> · 
-      <a data-page="services">Услуги</a> · 
-      <a data-page="lisp">Разработка LISP</a> · 
-      <a data-page="shop">Скрипты</a> · 
-      <a data-page="tech3d">Техническое 3D</a> · 
-      <a data-page="contact">Контакты</a> · 
+      <a data-page="home">Главная</a> ·
+      <a data-page="services">Услуги</a> ·
+      <a data-page="lisp">Разработка LISP</a> ·
+      <a data-page="shop">Скрипты</a> ·
+      <a data-page="tech3d">Техническое 3D</a> ·
+      <a data-page="contact">Контакты</a> ·
       <a href="https://maxufa.github.io/project/" target="_blank">maxufa.github.io/project/</a>
     </div>
   </div>
 </footer>
 
-<!-- ================ ЛАЙТБОКС (ПОЛНОЭКРАННЫЙ) ================= -->
+<!-- ================ ЛАЙТБОКС ================= -->
 <div id="lightbox" class="lightbox">
   <button class="lb-close" onclick="closeLightbox()">&times;</button>
   <button class="lb-nav lb-prev" onclick="prevImage()">&#10094;</button>
-  <img id="lightbox-img" src="" alt="Просмотр">
+  <img id="lightbox-img" src="" alt="Просмотр" loading="lazy">
   <button class="lb-nav lb-next" onclick="nextImage()">&#10095;</button>
 </div>
 
@@ -951,10 +766,28 @@ footer a:hover{color:var(--acc)}
   var currentImages = [];
   var currentIndex = 0;
 
-  var plansImages = ['img/plan-example1.jpg', 'img/plan-example2.jpg', 'img/plan-example3.jpg', 'img/plan-example4.jpg'];
-  var facadeImages = ['img/facade-example1.jpg', 'img/facade-example2.jpg', 'img/facade-example3.jpg'];
-  var room3dImages = ['img/room3d-example1.jpg', 'img/room3d-example2.jpg', 'img/room3d-example3.jpg'];
-  var tech3dImages = ['img/tech3d-example1.jpg', 'img/tech3d-example2.jpg', 'img/tech3d-example3.jpg'];
+  // Массивы для лайтбокса — ПОЛНОРАЗМЕРНЫЕ версии
+  var plansImages = [
+    'img/plan-example1-full.jpg',
+    'img/plan-example2-full.jpg',
+    'img/plan-example3-full.jpg',
+    'img/plan-example4-full.jpg'
+  ];
+  var facadeImages = [
+    'img/facade-example1-full.jpg',
+    'img/facade-example2-full.jpg',
+    'img/facade-example3-full.jpg'
+  ];
+  var room3dImages = [
+    'img/room3d-example1.jpg',
+    'img/room3d-example2.jpg',
+    'img/room3d-example3-full.jpg'
+  ];
+  var tech3dImages = [
+    'img/tech3d-example1.png',
+    'img/tech3d-example2.png',
+    'img/tech3d-example3.png'
+  ];
 
   window.openGallery = function(index) {
     currentImages = plansImages;
@@ -987,7 +820,7 @@ footer a:hover{color:var(--acc)}
     var imgSrc = currentImages[currentIndex];
     document.getElementById('lightbox-img').src = imgSrc;
     document.getElementById('lightbox').classList.add('active');
-    
+
     var prevBtn = document.querySelector('.lb-prev');
     var nextBtn = document.querySelector('.lb-next');
     if(currentImages.length <= 1) {
@@ -1027,7 +860,6 @@ footer a:hover{color:var(--acc)}
     if(e.key === 'ArrowLeft') prevImage();
     if(e.key === 'ArrowRight') nextImage();
   });
-
 
   document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -1089,7 +921,6 @@ footer a:hover{color:var(--acc)}
   function renderProducts(){
     var list = PRODUCTS.filter(function(p){ return currentCat === 'Все' || p.cat === currentCat; });
     prodBox.innerHTML = list.map(function(p){
-      var idx = PRODUCTS.indexOf(p);
       return '<div class="card product hover in">' +
         '<div class="meta"><span class="cat">'+esc(p.cat)+'</span><span class="cmd">'+esc(p.cmd)+'</span></div>' +
         '<h3>'+esc(p.name)+'</h3>' +
@@ -1131,11 +962,11 @@ footer a:hover{color:var(--acc)}
   function initCompare(containerId, dataKey) {
     var container = document.getElementById(containerId);
     if (!container) return;
-    
+
     var c = COMPARE_DATA[dataKey];
     var figClass = 'ba ' + (c.customClass || '');
-    
-    container.innerHTML = 
+
+    container.innerHTML =
       '<div class="ba-item reveal in">' +
         '<figure class="'+figClass+'" style="--pos:50%">' +
           '<img class="ba-a" alt="Стало: '+esc(c.title)+'" loading="lazy">' +
@@ -1162,7 +993,7 @@ footer a:hover{color:var(--acc)}
         }
         return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
       })(isAfter);
-      
+
       img.addEventListener('error', function() { if (img.src !== ph) img.src = ph; });
       img.src = src || ph;
     }
@@ -1182,3 +1013,4 @@ footer a:hover{color:var(--acc)}
 </script>
 </body>
 </html>
+
