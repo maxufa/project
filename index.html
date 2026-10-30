@@ -75,15 +75,6 @@ nav{display:flex;align-items:center;justify-content:space-between;height:80px;ga
 .btn-ghost:hover{border-color:var(--acc);color:var(--acc)}
 .btn-sm{padding:9px 16px;font-size:13.5px}
 
-/* ---------- ОВЕРЛЕЙ ДЛЯ МЕНЮ ---------- */
-.nav-overlay{
-  display:none;
-  position:fixed; inset:0; z-index:49;
-  background:rgba(0,0,0,.45);
-  touch-action: none;   /* ← ДОБАВЛЕНО: ловим касания, а не скроллим страницу */
-}
-.nav-overlay.active{ display:block; }
-
 /* ---------- HERO ---------- */
 .hero{position:relative;padding:90px 0 70px;overflow:hidden}
 .hero::before{
@@ -323,14 +314,14 @@ footer a:hover{color:var(--acc)}
 }
 @media(max-width:960px){
   .hero .wrap{grid-template-columns:1fr}
-  .board{display:none}              /* ← скрыть доску на мобильных */
+  .board{display:none}
   .grid-3{grid-template-columns:1fr 1fr}
   .grid-2{grid-template-columns:1fr}
   .nav-cta{display:none}
   .nav-links{
     display:none;position:absolute;top:80px;left:0;right:0;flex-direction:column;gap:0;
     background:rgba(5,7,10,.97);border-bottom:1px solid var(--line);padding:8px 22px 14px;
-    z-index:51;
+    z-index:51; max-height:calc(100vh - 80px); overflow-y:auto;
   }
   .nav-links.open{display:flex}
   .nav-links a{padding:12px 0;border-bottom:1px solid var(--line);text-align:left;}
@@ -375,7 +366,6 @@ footer a:hover{color:var(--acc)}
   .burger { display: block; width: 36px; height: 32px; font-size: 16px; }
   main { padding-top: 48px; }
 
-  /* Слайдеры «Было/Стало» в ландшафте: уже и с отступами по ~1 см */
   #compare-zamer,
   #compare-chertezh {
     max-width: calc(100% - 2cm) !important;
@@ -430,7 +420,6 @@ footer a:hover{color:var(--acc)}
       <button class="burger" id="burger" aria-label="Меню">☰</button>
     </nav>
   </div>
-  <div class="nav-overlay" id="navOverlay"></div>
 </header>
 
 <main>
@@ -1122,18 +1111,16 @@ footer a:hover{color:var(--acc)}
   // --- ГОД ---
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  // --- НАВИГАЦИЯ С ОВЕРЛЕЕМ ---
+  // --- НАВИГАЦИЯ ---
   var pages = document.querySelectorAll('.page');
   var navLinksBox = document.getElementById('navLinks');
-  var navOverlay = document.getElementById('navOverlay');
+  var burger = document.getElementById('burger');
 
   function openMenu(){
     navLinksBox.classList.add('open');
-    navOverlay.classList.add('active');
   }
   function closeMenu(){
     navLinksBox.classList.remove('open');
-    navOverlay.classList.remove('active');
   }
 
   function showPage(name, push){
@@ -1147,6 +1134,7 @@ footer a:hover{color:var(--acc)}
     if(push && history.pushState){ history.pushState({page:name}, '', '#' + name); }
   }
 
+  // Переход по ссылкам data-page
   document.addEventListener('click', function(e){
     var el = e.target.closest('[data-page]');
     if(!el) return;
@@ -1154,39 +1142,55 @@ footer a:hover{color:var(--acc)}
     showPage(el.dataset.page, true);
   });
 
-  document.getElementById('burger').addEventListener('click', function(e){
+  // Бургер
+  burger.addEventListener('click', function(e){
     e.stopPropagation();
     if(navLinksBox.classList.contains('open')) closeMenu();
     else openMenu();
   });
 
-  // Закрытие по клику (мышь / тап)
-  navOverlay.addEventListener('click', closeMenu);
-
-  // Закрытие по свайпу за пределами меню (touch)
-  var touchStartX = 0, touchStartY = 0;
-  var SWIPE_THRESHOLD = 30; // px — минимальная длина свайпа
-
-  navOverlay.addEventListener('touchstart', function(e){
-    if (e.touches.length !== 1) return;
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-  }, { passive: true });
-
-  navOverlay.addEventListener('touchend', function(e){
-    if (e.changedTouches.length !== 1) return;
-    var dx = Math.abs(e.changedTouches[0].clientX - touchStartX);
-    var dy = Math.abs(e.changedTouches[0].clientY - touchStartY);
-    if (dx > SWIPE_THRESHOLD || dy > SWIPE_THRESHOLD) {
-      closeMenu();
-    }
-  }, { passive: true });
-
-  // Закрытие при клике по ссылке внутри меню
+  // Клик по ссылке внутри меню — закрываем после перехода
   navLinksBox.addEventListener('click', function(e){
     if(e.target.closest('a')) closeMenu();
   });
 
+  // === ЗАКРЫТИЕ ПО КЛИКУ ВНЕ МЕНЮ ===
+  document.addEventListener('click', function(e){
+    if(!navLinksBox.classList.contains('open')) return;
+    if(e.target.closest('#navLinks') || e.target.closest('#burger')) return;
+    closeMenu();
+  });
+
+  // === ЗАКРЫТИЕ ПО СВАЙПУ ВНЕ МЕНЮ ===
+  var touchStartX = 0, touchStartY = 0, touchMoved = false;
+  var SWIPE_THRESHOLD = 30;
+
+  document.addEventListener('touchstart', function(e){
+    if(!navLinksBox.classList.contains('open')) return;
+    if(e.touches.length !== 1) return;
+    if(e.target.closest('#navLinks') || e.target.closest('#burger')) return;
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchMoved = false;
+  }, { passive: true });
+
+  document.addEventListener('touchmove', function(e){
+    if(!navLinksBox.classList.contains('open')) return;
+    if(e.touches.length !== 1) return;
+    var dx = Math.abs(e.touches[0].clientX - touchStartX);
+    var dy = Math.abs(e.touches[0].clientY - touchStartY);
+    if(dx > SWIPE_THRESHOLD || dy > SWIPE_THRESHOLD) touchMoved = true;
+  }, { passive: true });
+
+  document.addEventListener('touchend', function(e){
+    if(!navLinksBox.classList.contains('open')) return;
+    if(touchMoved){
+      closeMenu();
+    }
+    touchMoved = false;
+  }, { passive: true });
+
+  // Стартовая страница
   var start = (location.hash || '#home').replace('#','');
   if(!document.getElementById('page-' + start)) start = 'home';
   showPage(start, false);
