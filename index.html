@@ -314,7 +314,7 @@ footer a:hover{color:var(--acc)}
 }
 @media(max-width:960px){
   .hero .wrap{grid-template-columns:1fr}
-  .board{margin:0 auto}
+  .board{display:none}          /* ← ДОБАВЛЕНО: скрыть доску на мобильных */
   .grid-3{grid-template-columns:1fr 1fr}
   .grid-2{grid-template-columns:1fr}
   .nav-cta{display:none}
@@ -355,6 +355,8 @@ footer a:hover{color:var(--acc)}
     border-radius: 12px; padding: 6px 14px;
     box-shadow: 0 12px 30px rgba(0,0,0,.6);
     display: none; z-index: 60;
+    max-height: calc(100vh - 60px);   /* ← ДОБАВЛЕНО */
+    overflow-y: auto;                  /* ← ДОБАВЛЕНО */
   }
   .nav-links.open { display: flex; }
   .nav-links a { padding: 10px 0; border-bottom: 1px solid var(--line); text-align: left; font-size: 13px; }
