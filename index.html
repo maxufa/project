@@ -80,6 +80,7 @@ nav{display:flex;align-items:center;justify-content:space-between;height:80px;ga
   display:none;
   position:fixed; inset:0; z-index:49;
   background:rgba(0,0,0,.45);
+  touch-action: none;   /* ← ДОБАВЛЕНО: ловим касания, а не скроллим страницу */
 }
 .nav-overlay.active{ display:block; }
 
@@ -1159,8 +1160,29 @@ footer a:hover{color:var(--acc)}
     else openMenu();
   });
 
+  // Закрытие по клику (мышь / тап)
   navOverlay.addEventListener('click', closeMenu);
 
+  // Закрытие по свайпу за пределами меню (touch)
+  var touchStartX = 0, touchStartY = 0;
+  var SWIPE_THRESHOLD = 30; // px — минимальная длина свайпа
+
+  navOverlay.addEventListener('touchstart', function(e){
+    if (e.touches.length !== 1) return;
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+
+  navOverlay.addEventListener('touchend', function(e){
+    if (e.changedTouches.length !== 1) return;
+    var dx = Math.abs(e.changedTouches[0].clientX - touchStartX);
+    var dy = Math.abs(e.changedTouches[0].clientY - touchStartY);
+    if (dx > SWIPE_THRESHOLD || dy > SWIPE_THRESHOLD) {
+      closeMenu();
+    }
+  }, { passive: true });
+
+  // Закрытие при клике по ссылке внутри меню
   navLinksBox.addEventListener('click', function(e){
     if(e.target.closest('a')) closeMenu();
   });
