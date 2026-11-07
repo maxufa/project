@@ -64,7 +64,25 @@ nav{display:flex;align-items:center;justify-content:space-between;height:80px;ga
   content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;
   background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:2px;
 }
-.burger{display:none;background:none;border:1px solid var(--line);color:var(--txt);width:42px;height:38px;border-radius:10px;font-size:18px;cursor:pointer}
+
+/* ---------- БУРГЕР: СИНЯЯ ПУЛЬСИРУЮЩАЯ КНОПКА ---------- */
+.burger{
+  display:none;
+  background:linear-gradient(135deg,var(--acc),var(--acc2));
+  border:1px solid var(--acc);
+  color:#04121f;
+  width:42px;height:38px;border-radius:10px;
+  font-size:18px;cursor:pointer;
+  font-weight:700;
+  box-shadow:0 0 0 0 rgba(62,166,255,.7);
+  animation:burgerPulse 1.6s ease-in-out infinite;
+}
+@keyframes burgerPulse{
+  0%   { box-shadow:0 0 0 0 rgba(62,166,255,.7); transform:scale(1); }
+  50%  { box-shadow:0 0 0 10px rgba(62,166,255,0); transform:scale(1.06); }
+  100% { box-shadow:0 0 0 0 rgba(62,166,255,0); transform:scale(1); }
+}
+
 .btn{
   display:inline-block;padding:11px 20px;border-radius:11px;font-weight:600;
   font-size:14.5px;border:1px solid transparent;cursor:pointer;transition:.22s;font-family:inherit;flex-shrink:0;
@@ -503,13 +521,13 @@ footer a:hover{color:var(--acc)}
   <section>
     <div class="wrap">
       <div class="sec-head reveal">
-        <div class="kicker">Портфолио</div>
+        <div class="kicker">Примеры работ</div>
         <h2>Примеры выполненных работ</h2>
         <p>Нажмите на фото для увеличения или скачайте PDF/DWG.</p>
       </div>
       <div class="portfolio-grid">
         <div class="portfolio-card reveal">
-          <div class="portfolio-img-wrap" onclick="openLightbox('img/work1.jpg')">
+          <div class="portfolio-img-wrap" onclick="openLightbox('img/work1-full.jpg')">
             <img src="img/work1-thumb.jpg" alt="Пример чертежа" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:20px; text-align:center;\'>Фото work1-thumb.jpg</div>'">
           </div>
           <div class="portfolio-info">
@@ -523,7 +541,7 @@ footer a:hover{color:var(--acc)}
         </div>
 
         <div class="portfolio-card reveal">
-          <div class="portfolio-img-wrap" onclick="openLightbox('img/work2.jpg')">
+          <div class="portfolio-img-wrap" onclick="openLightbox('img/work2-full.jpg')">
             <img src="img/work2-thumb.jpg" alt="Пример 3D-модели" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:20px; text-align:center;\'>Фото work2-thumb.jpg</div>'">
           </div>
           <div class="portfolio-info">
@@ -537,7 +555,7 @@ footer a:hover{color:var(--acc)}
         </div>
 
         <div class="portfolio-card reveal">
-          <div class="portfolio-img-wrap" onclick="openLightbox('img/work3.jpg')">
+          <div class="portfolio-img-wrap" onclick="openLightbox('img/work3-full.jpg')">
             <img src="img/work3-thumb.jpg" alt="Пример рабочего чертежа" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:20px; text-align:center;\'>Фото work3-thumb.jpg</div>'">
           </div>
           <div class="portfolio-info">
@@ -942,11 +960,16 @@ footer a:hover{color:var(--acc)}
           </div>
         </a>
 
+        <a href="https://wa.me/79177506316" target="_blank" class="tg-card" style="text-decoration:none;">
+          <img src="img/WhatsApp_QR.jpg" alt="WhatsApp QR" class="tg-qr" loading="lazy" onerror="this.style.display='none'">
+          <div class="tg-info">
+            <b>WhatsApp</b>
+            <span>+7 (917) 750-63-16</span>
+            <p>Отсканируйте QR-код камерой телефона или нажмите, чтобы открыть чат в WhatsApp.</p>
+          </div>
+        </a>
+
         <div class="info-list">
-          <a href="https://wa.me/79177506316" target="_blank" class="info-item" style="text-decoration:none;">
-            <div class="ico">📱</div>
-            <div><b>WhatsApp / Телефон</b><span>+7 (917) 750-63-16</span></div>
-          </a>
           <a href="mailto:hello@draftline.pro" class="info-item" style="text-decoration:none;">
             <div class="ico">✉️</div>
             <div><b>E-mail</b><span>hello@draftline.pro</span></div>
@@ -1002,7 +1025,6 @@ footer a:hover{color:var(--acc)}
     whatsapp: '+79177506316'
   };
 
-  // --- ЛАЙТБОКС ---
   var currentImages = [];
   var currentIndex = 0;
 
@@ -1031,74 +1053,30 @@ footer a:hover{color:var(--acc)}
     'img/land-full.jpg'
   ];
 
-  window.openGallery = function(index) {
-    currentImages = plansImages;
-    currentIndex = index;
-    showLightboxImage();
-  };
-  window.openFacadeGallery = function(index) {
-    currentImages = facadeImages;
-    currentIndex = index;
-    showLightboxImage();
-  };
-  window.openRoom3DGallery = function(index) {
-    currentImages = room3dImages;
-    currentIndex = index;
-    showLightboxImage();
-  };
-  window.openTech3DGallery = function(index) {
-    currentImages = tech3dImages;
-    currentIndex = index;
-    showLightboxImage();
-  };
-  window.openLandGallery = function(index) {
-    currentImages = landImages;
-    currentIndex = index;
-    showLightboxImage();
-  };
+  window.openGallery = function(index) { currentImages = plansImages; currentIndex = index; showLightboxImage(); };
+  window.openFacadeGallery = function(index) { currentImages = facadeImages; currentIndex = index; showLightboxImage(); };
+  window.openRoom3DGallery = function(index) { currentImages = room3dImages; currentIndex = index; showLightboxImage(); };
+  window.openTech3DGallery = function(index) { currentImages = tech3dImages; currentIndex = index; showLightboxImage(); };
+  window.openLandGallery = function(index) { currentImages = landImages; currentIndex = index; showLightboxImage(); };
 
-  window.openLightbox = function(src) {
-    currentImages = [src];
-    currentIndex = 0;
-    showLightboxImage();
-  };
+  window.openLightbox = function(src) { currentImages = [src]; currentIndex = 0; showLightboxImage(); };
 
   function showLightboxImage() {
     var imgSrc = currentImages[currentIndex];
     document.getElementById('lightbox-img').src = imgSrc;
     document.getElementById('lightbox').classList.add('active');
-
     var prevBtn = document.querySelector('.lb-prev');
     var nextBtn = document.querySelector('.lb-next');
-    if(currentImages.length <= 1) {
-      prevBtn.style.display = 'none';
-      nextBtn.style.display = 'none';
-    } else {
-      prevBtn.style.display = 'flex';
-      nextBtn.style.display = 'flex';
-    }
+    if(currentImages.length <= 1) { prevBtn.style.display = 'none'; nextBtn.style.display = 'none'; }
+    else { prevBtn.style.display = 'flex'; nextBtn.style.display = 'flex'; }
   }
 
-  window.closeLightbox = function() {
-    document.getElementById('lightbox').classList.remove('active');
-  };
-
-  window.prevImage = function() {
-    if(currentImages.length <= 1) return;
-    currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
-    showLightboxImage();
-  };
-
-  window.nextImage = function() {
-    if(currentImages.length <= 1) return;
-    currentIndex = (currentIndex + 1) % currentImages.length;
-    showLightboxImage();
-  };
+  window.closeLightbox = function() { document.getElementById('lightbox').classList.remove('active'); };
+  window.prevImage = function() { if(currentImages.length <= 1) return; currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length; showLightboxImage(); };
+  window.nextImage = function() { if(currentImages.length <= 1) return; currentIndex = (currentIndex + 1) % currentImages.length; showLightboxImage(); };
 
   document.getElementById('lightbox').addEventListener('click', function(e) {
-    if(e.target === this || e.target.classList.contains('lb-close')) {
-      closeLightbox();
-    }
+    if(e.target === this || e.target.classList.contains('lb-close')) closeLightbox();
   });
 
   document.addEventListener('keydown', function(e) {
@@ -1108,33 +1086,24 @@ footer a:hover{color:var(--acc)}
     if(e.key === 'ArrowRight') nextImage();
   });
 
-  // --- ГОД ---
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  // --- НАВИГАЦИЯ ---
   var pages = document.querySelectorAll('.page');
   var navLinksBox = document.getElementById('navLinks');
   var burger = document.getElementById('burger');
 
-  function openMenu(){
-    navLinksBox.classList.add('open');
-  }
-  function closeMenu(){
-    navLinksBox.classList.remove('open');
-  }
+  function openMenu(){ navLinksBox.classList.add('open'); }
+  function closeMenu(){ navLinksBox.classList.remove('open'); }
 
   function showPage(name, push){
     pages.forEach(function(p){ p.classList.toggle('active', p.id === 'page-' + name); });
-    document.querySelectorAll('.nav-links a').forEach(function(a){
-      a.classList.toggle('active', a.dataset.page === name);
-    });
+    document.querySelectorAll('.nav-links a').forEach(function(a){ a.classList.toggle('active', a.dataset.page === name); });
     closeMenu();
     window.scrollTo({top:0, behavior:'smooth'});
     document.querySelectorAll('.page.active .reveal').forEach(function(el){ el.classList.add('in'); });
     if(push && history.pushState){ history.pushState({page:name}, '', '#' + name); }
   }
 
-  // Переход по ссылкам data-page
   document.addEventListener('click', function(e){
     var el = e.target.closest('[data-page]');
     if(!el) return;
@@ -1142,28 +1111,23 @@ footer a:hover{color:var(--acc)}
     showPage(el.dataset.page, true);
   });
 
-  // Бургер
   burger.addEventListener('click', function(e){
     e.stopPropagation();
     if(navLinksBox.classList.contains('open')) closeMenu();
     else openMenu();
   });
 
-  // Клик по ссылке внутри меню — закрываем после перехода
   navLinksBox.addEventListener('click', function(e){
     if(e.target.closest('a')) closeMenu();
   });
 
-  // === ЗАКРЫТИЕ ПО КЛИКУ ВНЕ МЕНЮ ===
   document.addEventListener('click', function(e){
     if(!navLinksBox.classList.contains('open')) return;
     if(e.target.closest('#navLinks') || e.target.closest('#burger')) return;
     closeMenu();
   });
 
-  // === ЗАКРЫТИЕ ПО ТАПУ/СВАЙПУ ВНЕ МЕНЮ ===
   var touchStartedOutside = false;
-
   document.addEventListener('touchstart', function(e){
     if(!navLinksBox.classList.contains('open')) return;
     if(e.touches.length !== 1) return;
@@ -1174,13 +1138,10 @@ footer a:hover{color:var(--acc)}
 
   document.addEventListener('touchend', function(e){
     if(!navLinksBox.classList.contains('open')) return;
-    if(touchStartedOutside){
-      closeMenu();
-    }
+    if(touchStartedOutside){ closeMenu(); }
     touchStartedOutside = false;
   }, { passive: true });
 
-  // Стартовая страница
   var start = (location.hash || '#home').replace('#','');
   if(!document.getElementById('page-' + start)) start = 'home';
   showPage(start, false);
@@ -1190,7 +1151,6 @@ footer a:hover{color:var(--acc)}
     if(document.getElementById('page-' + h)) showPage(h, false);
   });
 
-  // --- АНИМАЦИЯ ПОЯВЛЕНИЯ ---
   var io = new IntersectionObserver(function(entries){
     entries.forEach(function(en){
       if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
@@ -1198,7 +1158,6 @@ footer a:hover{color:var(--acc)}
   },{threshold:.14});
   document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
 
-  // --- СЛАЙДЕРЫ БЫЛО/СТАЛО ---
   var COMPARE_DATA = {
     zamer: {
       title: 'От замеров до чертежа',
@@ -1221,10 +1180,8 @@ footer a:hover{color:var(--acc)}
   function initCompare(containerId, dataKey) {
     var container = document.getElementById(containerId);
     if (!container) return;
-
     var c = COMPARE_DATA[dataKey];
     var figClass = 'ba ' + (c.customClass || '');
-
     container.innerHTML =
       '<div class="ba-item reveal in">' +
         '<figure class="'+figClass+'" style="--pos:50%">' +
@@ -1236,12 +1193,10 @@ footer a:hover{color:var(--acc)}
         '</figure>' +
         '<div class="cap"><b>'+esc(c.title)+'</b>'+esc(c.cap)+'</div>' +
       '</div>';
-
     var fig = container.querySelector('.ba');
     var imgA = container.querySelector('.ba-a');
     var imgB = container.querySelector('.ba-b');
     var input = container.querySelector('input');
-
     function setupImg(img, src, isAfter) {
       var ph = (function(isAfter, w) {
         var w = 420, svg;
@@ -1252,17 +1207,12 @@ footer a:hover{color:var(--acc)}
         }
         return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
       })(isAfter);
-
       img.addEventListener('error', function() { if (img.src !== ph) img.src = ph; });
       img.src = src || ph;
     }
-
     setupImg(imgA, c.after, true);
     setupImg(imgB, c.before, false);
-
-    input.addEventListener('input', function(e) {
-      fig.style.setProperty('--pos', e.target.value + '%');
-    });
+    input.addEventListener('input', function(e) { fig.style.setProperty('--pos', e.target.value + '%'); });
   }
 
   initCompare('compare-zamer', 'zamer');
