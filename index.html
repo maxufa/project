@@ -381,7 +381,16 @@ footer a:hover{color:var(--acc)}
   .nav-links a { padding: 10px 0; border-bottom: 1px solid var(--line); text-align: left; font-size: 13px; }
   .nav-links a:last-child { border-bottom: none; }
   .nav-cta { display: none; }
-  .burger { display: block; width: 36px; height: 32px; font-size: 16px; }
+  .burger {
+    display: block;
+    width: 36px; height: 32px; font-size: 16px;
+    background: linear-gradient(135deg, var(--acc), var(--acc2));
+    border: 1px solid var(--acc);
+    color: #04121f;
+    font-weight: 700;
+    box-shadow: 0 0 0 0 rgba(62,166,255,.7);
+    animation: burgerPulse 1.6s ease-in-out infinite;
+  }
   main { padding-top: 48px; }
 
   #compare-zamer,
