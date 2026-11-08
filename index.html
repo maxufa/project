@@ -65,7 +65,7 @@ nav{display:flex;align-items:center;justify-content:space-between;height:80px;ga
   background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:2px;
 }
 
-/* ---------- БУРГЕР: СИНЯЯ ПУЛЬСИРУЮЩАЯ КНОПКА ---------- */
+/* ---------- БУРГЕР ---------- */
 .burger{
   display:none;
   background:linear-gradient(135deg,var(--acc),var(--acc2));
@@ -239,7 +239,7 @@ a.card:hover,.card.hover:hover{transform:translateY(-5px);border-color:#33506d;b
 .work-item:hover { border-color: var(--acc); transform: translateY(-3px); }
 .work-item img { width: 100%; height: 250px; object-fit: cover; display: block; }
 
-/* Сетка для двух карточек (Электрика и Ведомость) */
+/* Сетка для двух карточек */
 .grid-resp-2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -247,7 +247,7 @@ a.card:hover,.card.hover:hover{transform:translateY(-5px);border-color:#33506d;b
   margin-top: 22px;
 }
 
-/* ---------- ЛАЙТБОКС (ПОЛНОЭКРАННЫЙ ПРОСМОТР) ---------- */
+/* ---------- ЛАЙТБОКС ---------- */
 .lightbox {
   display: none; position: fixed; inset: 0; z-index: 1000;
   background: rgba(0,0,0,0.92); padding: 20px;
@@ -358,13 +358,9 @@ footer a:hover{color:var(--acc)}
   .lb-next { right: 10px; }
 }
 
-/* ========== КОМПАКТНАЯ ШАПКА В ГОРИЗОНТАЛЬНОЙ ОРИЕНТАЦИИ ========== */
 @media (max-height: 500px) and (orientation: landscape) {
   header { position: fixed; top: 0; left: 0; right: 0; }
-  nav {
-    height: 48px; min-height: 48px; padding: 4px 12px;
-    flex-direction: row; justify-content: space-between;
-  }
+  nav { height: 48px; min-height: 48px; padding: 4px 12px; flex-direction: row; justify-content: space-between; }
   .logo { gap: 6px; font-size: 16px; }
   .logo-img { height: 32px; padding: 2px 6px; }
   .nav-links {
@@ -374,35 +370,16 @@ footer a:hover{color:var(--acc)}
     border-radius: 12px; padding: 6px 14px;
     box-shadow: 0 12px 30px rgba(0,0,0,.6);
     display: none; z-index: 60;
-    max-height: calc(100vh - 60px);
-    overflow-y: auto;
+    max-height: calc(100vh - 60px); overflow-y: auto;
   }
   .nav-links.open { display: flex; }
   .nav-links a { padding: 10px 0; border-bottom: 1px solid var(--line); text-align: left; font-size: 13px; }
   .nav-links a:last-child { border-bottom: none; }
   .nav-cta { display: none; }
-  .burger {
-    display: block;
-    width: 36px; height: 32px; font-size: 16px;
-    background: linear-gradient(135deg, var(--acc), var(--acc2));
-    border: 1px solid var(--acc);
-    color: #04121f;
-    font-weight: 700;
-    box-shadow: 0 0 0 0 rgba(62,166,255,.7);
-    animation: burgerPulse 1.6s ease-in-out infinite;
-  }
+  .burger { display: block; width: 36px; height: 32px; font-size: 16px; background: linear-gradient(135deg, var(--acc), var(--acc2)); border: 1px solid var(--acc); color: #04121f; font-weight: 700; box-shadow: 0 0 0 0 rgba(62,166,255,.7); animation: burgerPulse 1.6s ease-in-out infinite; }
   main { padding-top: 48px; }
-
-  #compare-zamer,
-  #compare-chertezh {
-    max-width: calc(100% - 2cm) !important;
-    margin-left: 1cm !important;
-    margin-right: 1cm !important;
-  }
-  #compare-zamer .ba,
-  #compare-chertezh .ba {
-    aspect-ratio: 16 / 9;
-  }
+  #compare-zamer, #compare-chertezh { max-width: calc(100% - 2cm) !important; margin-left: 1cm !important; margin-right: 1cm !important; }
+  #compare-zamer .ba, #compare-chertezh .ba { aspect-ratio: 16 / 9; }
 }
 </style>
 </head>
@@ -466,7 +443,6 @@ footer a:hover{color:var(--acc)}
           <a class="btn btn-ghost" data-page="lisp">Скачать LISP-скрипты</a>
         </div>
       </div>
-
       <div class="board" aria-hidden="true">
         <svg viewBox="0 0 440 440">
           <g class="grid">
@@ -764,23 +740,73 @@ footer a:hover{color:var(--acc)}
   </section>
 </div>
 
-<!-- ================= ГОТОВЫЕ СКРИПТЫ (ЗАГЛУШКА) ================= -->
+<!-- ================= ГОТОВЫЕ СКРИПТЫ ================= -->
 <div class="page" id="page-lisp">
   <section class="page-hero">
     <div class="wrap reveal">
-      <div class="tag">● <b>Каталог</b> · в разработке</div>
+      <div class="tag">● <b>Каталог</b> · скрипты для AutoCAD</div>
       <h1>Готовые LISP-скрипты для AutoCAD</h1>
-      <p>Страница в разработке. Скоро здесь появятся проверенные утилиты для типовых задач.</p>
+      <p>Проверенные утилиты для типовых задач. Скачайте скрипт, описание и начните работать быстрее.</p>
     </div>
   </section>
 
-  <section>
+  <section style="padding-top:20px">
     <div class="wrap">
-      <div class="card reveal" style="text-align:center; padding:60px 28px;">
-        <div class="ico" style="margin:0 auto 18px;">🚧</div>
-        <h3 style="font-size:22px; margin-bottom:12px;">Раздел в разработке</h3>
-        <p style="max-width:480px; margin:0 auto 22px;">Мы готовим каталог скриптов с описанием, командами запуска и возможностью скачивания. Загляните позже.</p>
-        <a class="btn btn-main" data-page="contact">Узнать о готовых скриптах</a>
+      <div class="grid-2">
+
+        <!-- ПЛИТКА 1: Ускорение черчения -->
+        <div class="card reveal" style="display:flex; flex-direction:column; gap:16px;">
+          <div>
+            <h3 style="margin-bottom:4px;">Ускорение черчения</h3>
+            <p style="color:var(--muted); font-size:13px; margin:0;">
+              Скрипт: <strong>poff_doff.fas</strong>
+            </p>
+          </div>
+
+          <div style="border-radius:10px; overflow:hidden; border:1px solid var(--line); background:#000;">
+            <img src="scripts/poff_doff.gif" alt="Демонстрация работы poff_doff"
+                 style="width:100%; height:auto; display:block;" loading="lazy"
+                 onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Файл poff_doff.gif не найден</div>'">
+          </div>
+
+          <p style="color:var(--muted); font-size:14px; line-height:1.5; margin:0;">
+            Оффсеты в одну или обе стороны с созданием замкнутой полилинии.
+          </p>
+
+          <div style="font-size:13.5px; color:var(--muted); line-height:1.6;">
+            <p style="margin-bottom:10px;"><strong style="color:var(--txt);">POFF</strong> — офсет <strong>в одну сторону</strong> с объединением в замкнутую полилинию.</p>
+            <ol style="padding-left:20px; display:grid; gap:4px; margin-bottom:14px;">
+              <li>Запустите команду.</li>
+              <li>Введите расстояние смещения (по умолчанию запоминается последнее, изначально 70).</li>
+              <li>Выберите полилинию или отрезок.</li>
+              <li>Укажите курсором сторону, в которую нужно сместить.</li>
+              <li>Команда смещает объект на заданное расстояние, соединяет концы исходного и смещённого, создаёт одну замкнутую полилинию и удаляет исходный объект с временным смещением.</li>
+              <li>Спрашивает, повторить ли операцию.</li>
+            </ol>
+            <p style="margin-bottom:14px;"><em>Результат — замкнутый контур (например, «окно» или проём) на том же слое, что был у исходного объекта.</em></p>
+
+            <p style="margin-bottom:10px;"><strong style="color:var(--txt);">DOFF</strong> — офсет <strong>в обе стороны</strong> с объединением в замкнутую полилинию.</p>
+            <ol style="padding-left:20px; display:grid; gap:4px; margin-bottom:14px;">
+              <li>Запустите команду.</li>
+              <li>Выберите полилинию или отрезок (это будет ось).</li>
+              <li>Введите расстояние смещения.</li>
+              <li>Команда смещает объект в обе стороны, соединяет концы обоих смещений в замкнутую полилинию, исходный объект переносит на слой <strong>К_осевая</strong> (создаёт слой, если его нет), временные смещения удаляет.</li>
+              <li>Результат не выделяется и не зумируется.</li>
+            </ol>
+            <p><em>Получается замкнутый контур на исходном слое + осевая линия на К_осевая.</em></p>
+          </div>
+
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:auto;">
+            <a href="scripts/poff_doff.fas" download class="btn btn-main btn-sm" style="flex:1; text-align:center;">
+              ⬇ Скачать .fas
+            </a>
+            <a href="scripts/poff_doff.docx" download class="btn btn-ghost btn-sm" style="flex:1; text-align:center;">
+              📄 Описание (Word)
+            </a>
+          </div>
+        </div>
+        <!-- КОНЕЦ ПЛИТКИ 1 -->
+
       </div>
     </div>
   </section>
@@ -806,7 +832,6 @@ footer a:hover{color:var(--acc)}
           <h3>Съемка ступеней</h3>
           <p>Точные обмеры винтовых, поворотных и прямых лестниц. Создание 3D-модели или чертежей для изготовления новых ступеней или облицовки.</p>
         </div>
-
         <div class="card reveal">
           <div class="portfolio-img-wrap" onclick="openLightbox('img/countertop-example.jpg')" style="margin-bottom:15px; border-radius:8px;">
             <img src="img/countertop-example.jpg" alt="Съемка столешницы" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'color:#8b98a9; padding:40px; text-align:center;\'>Фото countertop-example.jpg</div>'">
@@ -968,7 +993,6 @@ footer a:hover{color:var(--acc)}
             <p>Отсканируйте QR-код камерой телефона или нажмите, чтобы открыть чат в Telegram.</p>
           </div>
         </a>
-
         <a href="https://wa.me/79177506316" target="_blank" class="tg-card" style="text-decoration:none;">
           <img src="img/WhatsApp_QR.jpg" alt="WhatsApp QR" class="tg-qr" loading="lazy" onerror="this.style.display='none'">
           <div class="tg-info">
@@ -977,7 +1001,6 @@ footer a:hover{color:var(--acc)}
             <p>Отсканируйте QR-код камерой телефона или нажмите, чтобы открыть чат в WhatsApp.</p>
           </div>
         </a>
-
         <div class="info-list">
           <a href="mailto:hello@draftline.pro" class="info-item" style="text-decoration:none;">
             <div class="ico">✉️</div>
@@ -988,7 +1011,6 @@ footer a:hover{color:var(--acc)}
             <div><b>География</b><span>Замеры: г. Уфа и Республика Башкортостан. Чертежи, 3D и автоматизация: без ограничений.</span></div>
           </div>
         </div>
-
         <div style="text-align: center; margin-top: 20px;">
           <img src="img/logo.png" alt="Логотип" style="height: 120px; width: auto; background: rgba(255,255,255,0.95); padding: 15px 30px; border-radius: 12px; display: inline-block;" loading="lazy" onerror="this.style.display='none'">
         </div>
@@ -1018,7 +1040,6 @@ footer a:hover{color:var(--acc)}
   </div>
 </footer>
 
-<!-- ================ ЛАЙТБОКС ================= -->
 <div id="lightbox" class="lightbox">
   <button class="lb-close" onclick="closeLightbox()">&times;</button>
   <button class="lb-nav lb-prev" onclick="prevImage()">&#10094;</button>
@@ -1028,12 +1049,6 @@ footer a:hover{color:var(--acc)}
 
 <script>
 (function(){
-  var CONFIG = {
-    email:    'hello@draftline.pro',
-    telegram: '@AMAX02',
-    whatsapp: '+79177506316'
-  };
-
   var currentImages = [];
   var currentIndex = 0;
 
@@ -1058,37 +1073,29 @@ footer a:hover{color:var(--acc)}
     'img/tech3d-example2.png',
     'img/tech3d-example3.png'
   ];
-  var landImages = [
-    'img/land-full.jpg'
-  ];
+  var landImages = ['img/land-full.jpg'];
 
-  window.openGallery = function(index) { currentImages = plansImages; currentIndex = index; showLightboxImage(); };
-  window.openFacadeGallery = function(index) { currentImages = facadeImages; currentIndex = index; showLightboxImage(); };
-  window.openRoom3DGallery = function(index) { currentImages = room3dImages; currentIndex = index; showLightboxImage(); };
-  window.openTech3DGallery = function(index) { currentImages = tech3dImages; currentIndex = index; showLightboxImage(); };
-  window.openLandGallery = function(index) { currentImages = landImages; currentIndex = index; showLightboxImage(); };
-
-  window.openLightbox = function(src) { currentImages = [src]; currentIndex = 0; showLightboxImage(); };
+  window.openGallery = function(i){ currentImages = plansImages; currentIndex = i; showLightboxImage(); };
+  window.openFacadeGallery = function(i){ currentImages = facadeImages; currentIndex = i; showLightboxImage(); };
+  window.openRoom3DGallery = function(i){ currentImages = room3dImages; currentIndex = i; showLightboxImage(); };
+  window.openTech3DGallery = function(i){ currentImages = tech3dImages; currentIndex = i; showLightboxImage(); };
+  window.openLightbox = function(src){ currentImages = [src]; currentIndex = 0; showLightboxImage(); };
 
   function showLightboxImage() {
-    var imgSrc = currentImages[currentIndex];
-    document.getElementById('lightbox-img').src = imgSrc;
+    document.getElementById('lightbox-img').src = currentImages[currentIndex];
     document.getElementById('lightbox').classList.add('active');
-    var prevBtn = document.querySelector('.lb-prev');
-    var nextBtn = document.querySelector('.lb-next');
-    if(currentImages.length <= 1) { prevBtn.style.display = 'none'; nextBtn.style.display = 'none'; }
-    else { prevBtn.style.display = 'flex'; nextBtn.style.display = 'flex'; }
+    var p = document.querySelector('.lb-prev'), n = document.querySelector('.lb-next');
+    if(currentImages.length <= 1){ p.style.display='none'; n.style.display='none'; }
+    else { p.style.display='flex'; n.style.display='flex'; }
   }
+  window.closeLightbox = function(){ document.getElementById('lightbox').classList.remove('active'); };
+  window.prevImage = function(){ if(currentImages.length<=1) return; currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length; showLightboxImage(); };
+  window.nextImage = function(){ if(currentImages.length<=1) return; currentIndex = (currentIndex + 1) % currentImages.length; showLightboxImage(); };
 
-  window.closeLightbox = function() { document.getElementById('lightbox').classList.remove('active'); };
-  window.prevImage = function() { if(currentImages.length <= 1) return; currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length; showLightboxImage(); };
-  window.nextImage = function() { if(currentImages.length <= 1) return; currentIndex = (currentIndex + 1) % currentImages.length; showLightboxImage(); };
-
-  document.getElementById('lightbox').addEventListener('click', function(e) {
+  document.getElementById('lightbox').addEventListener('click', function(e){
     if(e.target === this || e.target.classList.contains('lb-close')) closeLightbox();
   });
-
-  document.addEventListener('keydown', function(e) {
+  document.addEventListener('keydown', function(e){
     if(!document.getElementById('lightbox').classList.contains('active')) return;
     if(e.key === 'Escape') closeLightbox();
     if(e.key === 'ArrowLeft') prevImage();
